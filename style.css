@@ -1,0 +1,21 @@
+body {
+    text-align: center;
+    margin: auto;
+}
+
+h1 {
+    margin: auto;
+    padding: 22px;
+}
+
+#divJogo {
+    display: none;
+}
+
+#letra {
+    width: 30px;
+}
+
+#lblForca {
+    font-size: 50px;
+} 

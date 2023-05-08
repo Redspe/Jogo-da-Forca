@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="code.js"></script>
+    <meta id="plvSecreta" value="">
+    <meta id="letraTeste" value="">
+    <title>Jogo da Forca</title>
+</head>
+<body>
+    <div id="divPrincipal">
+        <h1 class="titulo">A Forca</h1>
+        <label for="plvSecreta">Digite a palavra secreta:</label>
+        <br>
+        <input type="text" id="plvSecretaBase">
+        <br>
+        <br>
+        <input type="button" id="btnJogar" value="Jogar">
+    </div>
+
+    <div id="divJogo">
+        <h1 class="titulo">A Forca</h1>
+        <label>Tentativas restantes:</label>
+        <label id="tentativas">6</label>
+        <br>
+        <canvas></canvas>
+        <br>
+        <label id="lblForca"></label>
+        <br>
+        <br>
+        <label for="letra">Letra </label>
+        <input type="text" id="letra">
+        <input type="button" id="btnTestar" value="Testar">
+        <br>
+        <br>
+        <input type="button" id="btnSair" value="Sair do jogo">
+    </div>
+</body>
+</html>
