@@ -13,12 +13,26 @@
 <body>
     <div id="divPrincipal">
         <h1 class="titulo">A Forca</h1>
+        <pre>
+(ö ö)
+_|_
+|
+_/ \_
+        </pre>
         <label for="plvSecreta">Digite a palavra secreta:</label>
         <br>
         <input type="text" id="plvSecretaBase">
         <br>
         <br>
         <input type="button" id="btnJogar" value="Jogar">
+        <br>
+        <br>
+        <br>
+        <br>
+        <label>Não quer escolher uma palavra? Te damos uma aleatória!</label>
+        <br>
+        <br>
+        <input type="button" id="btnAleatorio" value="Palavra aleatória">
     </div>
 
     <div id="divJogo">
@@ -26,7 +40,12 @@
         <label>Tentativas restantes:</label>
         <label id="tentativas">6</label>
         <br>
-        <canvas></canvas>
+        <label>Letras erradas:</label>
+        <label id="letrasErradas"></label>
+        <br>
+        <canvas>
+
+        </canvas>
         <br>
         <label id="lblForca"></label>
         <br>
@@ -38,5 +57,6 @@
         <br>
         <input type="button" id="btnSair" value="Sair do jogo">
     </div>
+    <footer>Feito por Redspe 2023© <br> <a href="https://github.com/Redspe/Jogo-da-Forca">https://github.com/Redspe/Jogo-da-Forca</a></footer>
 </body>
 </html>
