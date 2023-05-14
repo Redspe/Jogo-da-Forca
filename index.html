@@ -7,17 +7,21 @@
     <link rel="stylesheet" href="style.css">
     <script type="module" src="code.js"></script>
     <meta id="plvSecreta" value="">
-    <meta id="letraTeste" value="">
     <title>Jogo da Forca</title>
 </head>
 <body>
     <div id="divPrincipal">
         <h1 class="titulo">A Forca</h1>
         <pre>
-(ö ö)
-_|_
+ ________
+/        |
+|        |      
+|      (x x)
+|       _|_
+|      ' | '
+|      _/ \_
 |
-_/ \_
+|
         </pre>
         <label for="plvSecreta">Digite a palavra secreta:</label>
         <br>
@@ -32,7 +36,7 @@ _/ \_
         <label>Não quer escolher uma palavra? Te damos uma aleatória!</label>
         <br>
         <br>
-        <input type="button" id="btnAleatorio" value="Palavra aleatória">
+        <input type="button" id="btnPlvAleat" value="Palavra aleatória">
     </div>
 
     <div id="divJogo">
@@ -41,7 +45,7 @@ _/ \_
         <label id="tentativas">6</label>
         <br>
         <label>Letras erradas:</label>
-        <label id="letrasErradas"></label>
+        <label id="lblLetrasErradas"></label>
         <br>
         <canvas>
 

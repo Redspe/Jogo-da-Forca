@@ -3,20 +3,30 @@ const divJogo = document.querySelector('#divJogo');
 const btnJogar = document.querySelector('#btnJogar');
 const btnSair = document.querySelector('#btnSair');
 const btnTestar = document.querySelector('#btnTestar');
+const btnPlvAleat = document.querySelector('#btnPlvAleat');
 const plvSecretaBase = document.querySelector('#plvSecretaBase');
 const plvSecretaBasE = document.querySelector('#plvSecretaBasE');
 const plvSecreta = document.querySelector('#plvSecreta');
 const letra = document.querySelector('#letra');
 const lblForca = document.querySelector('#lblForca');
 const lblTentativas = document.querySelector('#tentativas');
-const letrasErradas = document.querySelector('#letrasErradas');
+const lblLetrasErradas = document.querySelector('#lblLetrasErradas');
+let letraTeste = '';
 let plv = '';
-let letraTeste = document.querySelector('#letraTeste');
 let tentativas = 6;
 let segredo = [];
 let palavra = [];
 let erradas = [];
 let certas = [];
+
+/* 
+    Para arrumar:
+
+    -Terminar a função singleplayer
+    -Colocar uma imagem simbolizando os pontos (o stickman) na divJogo
+    -Deixar a página mais estilizada
+    
+*/
 
 divPrincipal.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
@@ -32,9 +42,9 @@ divJogo.addEventListener("keypress", function (event) {
     }
 });
 
-function palavraAleatoria() {
+btnPlvAleat.addEventListener('click', function palavraAleatoria() {
 
-}
+});
 
 function separarLetras() {                                                  /* separa as letras da palavra dada em um array */                                                          /* reseta o array para que limpe os dados da outra partida */
     segredo = [];
@@ -54,11 +64,15 @@ function contarEspacos() {                                                  /* C
     }
 }
 
-function reset() {                                                          /* Reinicia o jogo e volta para a tela de escolher a palavra secreta */
+function reset() {
+    tentativas = 6;                                                          /* Reinicia o jogo e volta para a tela de escolher a palavra secreta */
     divPrincipal.style.display = 'block';
     divJogo.style.display = null;
     plvSecretaBase.value = '';                                              /* reseta a palavra secreta no input do HTML */
     lblTentativas.innerHTML = tentativas;                                   /* reseta a quantidade de tentativas restantes */
+    erradas = [];
+    certas = [];
+    lblLetrasErradas.innerHTML = '';
     document.getElementById("letra").focus();
 }
 
@@ -66,7 +80,7 @@ btnJogar.addEventListener('click',                                          /* C
     function jogar(palavra) {
         if (typeof (palavra) === String && palavra !== '') {
             plvSecretaBase.value = palavra;
-            console.log(palavra)
+            console.log(palavra);
         } else {
             if (plvSecretaBase.value !== '') {                              /* Testa se tem alguma coisa escrita */
                 divPrincipal.style.display = 'none';
@@ -100,24 +114,20 @@ btnTestar.addEventListener('click',
                     if (letraTeste === segredo[i]) {
                         palavra[i] = letraTeste;
                         lblForca.innerHTML = palavra;
-
                         acertou = true;
                     }
                 }
                 if (acertou === true) {
-                    certas.push(letraTeste)
+                    certas.push(letraTeste);
                     acertou = false;
                 } else {
                     erradas.push(letraTeste)
-                    letrasErradas.innerHTML = erradas
+                    lblLetrasErradas.innerHTML = erradas;
                     tentativas--;
                     if (tentativas === 0) {
                         document.getElementById("letra").focus();
                         alert('Você perdeu. A palavra secreta era: ' + plvSecreta.value);
-                        tentativas = 6;
-                        erradas = [];
-                        certas = [];
-                        letrasErradas.innerHTML = '';
+                        lblLetrasErradas.innerHTML = '';
                         reset();
                     }
                 }
@@ -127,7 +137,7 @@ btnTestar.addEventListener('click',
                 lblTentativas.innerHTML = tentativas;
                 letra.value = '';
             } else {
-                alert('Você já testou esta letra. Por favor tente outra.')
+                alert('Você já testou esta letra. Por favor tente outra.');
             }
 
         }
@@ -139,10 +149,6 @@ btnTestar.addEventListener('click',
 
         if (forca === plvSecreta.value) {
             alert('Você Ganhou!!!');
-            erradas = [];
-            certas = [];
-            letrasErradas.innerHTML = '';
-            tentativas = 6;
             reset();
         }
         document.getElementById("letra").focus();

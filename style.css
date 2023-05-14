@@ -22,6 +22,12 @@ h1 {
     padding: 22px;
 }
 
+pre {
+    text-align:left;
+    width: fit-content;
+    margin: auto;
+}
+
 #divJogo {
     display: none;
 }
