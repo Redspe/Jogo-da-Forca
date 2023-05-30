@@ -7,25 +7,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
   <script type="module" src="code.js"></script>
-  <meta id="plvSecreta" value="" />
   <title>Jogo da Forca</title>
 </head>
 
-<body>
+<body id="body">
+  <h1 class="titulo">A Forca</h1>
+  <label>Pontuação da sessão atual: </label><label id="pontos">0</label>
+  <br><br>
   <div id="divPrincipal">
-    <h1 class="titulo">A Forca</h1>
     <pre>
  ________
-/        |
-|        |      
-|      (x x)
-|       _|_
-|      ' | '
-|      _/ \_
-|
-|
+//-------|
+||       |      
+||     (x x)
+||      _|_
+||     ' | '
+||     _/ \_
+||
+||
     </pre>
-    <label for="plvSecreta">Digite a palavra secreta:</label>
+    <label for="plvSecretaBase">Digite a palavra secreta:</label>
     <br />
     <input type="text" id="plvSecretaBase" />
     <br />
@@ -42,8 +43,7 @@
   </div>
 
   <div id="divJogo">
-    <h1 class="titulo">A Forca</h1>
-    <label>Tempo restante: </label><label id="tempo">100</label><label>s.</label>
+    <label>Tempo restante: </label><label id="tempo">120</label><label>s.</label>
     <br>
     <label>Tentativas restantes:</label>
     <label id="tentativas">6</label>
@@ -51,7 +51,8 @@
     <label>Letras erradas:</label>
     <label id="lblLetrasErradas"></label>
     <br />
-    <figure class="bonecos">
+    
+    <figure id="bonecos">
       <pre id="boneco0" style="display: block;">
  ________
 /        |
@@ -130,6 +131,7 @@
 |
 </pre>
     </figure>
+
     <br />
     <label id="lblForca"></label>
     <br />
@@ -143,7 +145,9 @@
   </div>
   <footer>
     Feito por Rafael Herrera 2023© <br />
-    <a href="https://github.com/Redspe/Jogo-da-Forca">https://github.com/Redspe/Jogo-da-Forca</a>
+    <address>
+      <a href="https://github.com/Redspe/Jogo-da-Forca">https://github.com/Redspe/Jogo-da-Forca</a>
+    </address>
   </footer>
 </body>
 

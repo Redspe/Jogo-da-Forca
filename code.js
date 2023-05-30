@@ -5,40 +5,56 @@ const btnSair = document.querySelector('#btnSair');
 const btnTestar = document.querySelector('#btnTestar');
 const btnPlvAleat = document.querySelector('#btnPlvAleat');
 const plvSecretaBase = document.querySelector('#plvSecretaBase');
-const plvSecretaBasE = document.querySelector('#plvSecretaBasE');
-const plvSecreta = document.querySelector('#plvSecreta');
 const letra = document.querySelector('#letra');
 const lblForca = document.querySelector('#lblForca');
 const lblTentativas = document.querySelector('#tentativas');
 const lblLetrasErradas = document.querySelector('#lblLetrasErradas');
 const lblTempo = document.querySelector('#tempo');
+const lblPontos = document.querySelector('#pontos');
+const body = document.querySelector('#body');
 
-const plvAleatoria = ['Abacate', 'Morango','Escada','Criança', 'Fralda', 'Leão', 'Pássaro', 
-'Natação', 'Banho', 'Musculação', 'Faca', 'Banana', 'Chave', 'Sapato', 'Relógio', 'Bolsa', 'Abraço', 
-'Beijo', 'Flores', 'Bateria', 'Carro', 'Moto', 'Colar', 'Brinco', 'Casa', 'Igreja', 'Macaco', 
-'Chá', 'Dançar', 'Sol', 'Árvore', 'Música', 'Pizza', 'Sorvete', 'Ônibus', 'Maçã', 'Espelho', 'Guitarra', 
-'Livro', 'Estrela', 'Balão', 'Avião', 'Elefante', 'Bola', 'Bebê', 'Peixe', 'Futebol', 'Beliscão', 
-'Rolo', 'Basquete', 'Controle', 'Triste', 'Gato', 'Golfe', 'Tesoura', 'Colher', 
-'Pular', 'Galinha', 'Sapo', 'Espirro', 'Martelo', 'Violão', 'Aplaudir', 'Tosse', 'Chifres', 'Pinguim', 
-'Chorar', 'Rabo', 'Piada', 'Escova', 'Celular', 'Cachorro', 'Pato', 'Sofá', 'Fotógrafo', 
-'Óculos', 'Balé', 'Pipa', 'Café', 'Táxi', 'Cadeira', 'Elevador', 'Bicicleta', 'Fogão', 
-'Copo', 'Orelhas', 'Chocolate', 'Pescador', 'Notebook', 'Lápis']; 
-
+/* Última vez contado: 119 palavras */
+const plvsAleatorias = [
+    'Abacate', 'Morango', 'Escada', 'Criança', 'Fralda', 'Leão', 'Pássaro', 'Natação', 'Banho',
+    'Academia', 'Faca', 'Banana', 'Chave', 'Sapato', 'Relógio', 'Bolsa', 'Abraço', 'Beijo', 'Flores',
+    'Bateria', 'Carro', 'Moto', 'Colar', 'Brinco', 'Casa', 'Igreja', 'Macaco', 'Chá', 'Dançar', 'Sol',
+    'Árvore', 'Música', 'Pizza', 'Sorvete', 'Ônibus', 'Maçã', 'Espelho', 'Guitarra', 'Livro', 'Estrela',
+    'Balão', 'Avião', 'Elefante', 'Bola', 'Bebê', 'Peixe', 'Futebol', 'Toalha', 'Papel higiênico',
+    'Basquete', 'Controle remoto', 'Triste', 'Gato', 'Golfe', 'Tesoura', 'Colher', 'Pular', 'Galinha',
+    'Sapo', 'Espirro', 'Martelo', 'Violão', 'Aplaudir', 'Tosse', 'Chifres', 'Pinguim', 'Chorar', 'Rabo',
+    'Piada', 'Escova de dente', 'Celular', 'Cachorro', 'Pato', 'Sofá', 'Fotógrafo', 'Óculos', 'Balé',
+    'Pipa', 'Café', 'Táxi', 'Cadeira', 'Elevador', 'Bicicleta', 'Fogão', 'Copo', 'Orelhas', 'Chocolate',
+    'Pescador', 'Notebook', 'Lápis', 'JavaScript', 'HTML', 'CSS', 'Internet', 'WWW', 'Google', 'ChatGPT',
+    'Python', 'Programação', 'Jogos', 'VSCode', 'Chrome', 'FireFox', 'Microsoft', 'Apple', 'Windows',
+    'Algoritmo', 'Nuvem', 'Linux', 'Harware', 'Software', 'Java', 'Bug', 'Antivírus', 'Backup',
+    'Bluetooth', 'Computador', 'Endereço IP', 'VPN'
+];
+let plvSecreta = '';
 let letraTeste = '';
 let tentativas = 6;
 let segredo = [];
 let palavra = [];
 let erradas = [];
 let certas = [];
-let tempo = 120;
+let pontos = 0;
+const tempoIni = 120;
+let tempo = tempoIni;
 let timer;
 
 /* 
     Para arrumar:
+    - Colocar dicas das palavras caso só falte 2-3 tentativas
+    - Deixar a página mais estilizada
+    - Otimizar o código
+*/
 
-    -Terminar a função acentos
-    -Deixar a página mais estilizada
-    
+/* 
+    Feitos (para facilitar versionamento):
+    - Adicionar frases compostas
+    - Timer único (sem ter que mudar vários lugares)
+    - Terminar a função acentos
+    - Terminar mudança da cor de fundo
+    - Terminar a função pontos
 */
 
 divPrincipal.addEventListener("keypress", function (event) {
@@ -56,33 +72,44 @@ divJogo.addEventListener("keypress", function (event) {
 });
 
 btnPlvAleat.addEventListener('click', function palavraAleatoria() {
-    const numAleat = Math.floor(Math.random() * plvAleatoria.length);
-    jogar(plvAleatoria[numAleat]);
+    const numAleat = Math.floor(Math.random() * plvsAleatorias.length);
+    jogar(plvsAleatorias[numAleat]);
 });
 
-function separarLetras() {                                                  /* separa as letras da palavra dada em um array */                                                          /* reseta o array para que limpe os dados da outra partida */
+function separarLetras() {
+    /* reseta o array para que limpe os dados da outra partida */
     segredo = [];
     palavra = [];
-    for (let i = 0; i < plvSecreta.value.length; i++) {                     /* faz um loop para pegar cada letra separadamente */                                /* "empurra" as letras para dentro da array EX: 'abacate' vira ['a','b','a','c','a','t','e'] */
-        segredo.push(plvSecreta.value[i]);
-        palavra.push('_');
+
+    /* "empurra" as letras para dentro da array EX: 'abacate' vira ['a','b','a','c','a','t','e'] */
+    for (let i = 0; i < plvSecreta.length; i++) {
+        segredo.push(plvSecreta[i]);
+        /* Se a 'palavra' dada tiver espaços (ou seja, é uma frase) colocar espaços para separar */
+        if (plvSecreta[i].includes(' ')) {
+            palavra.push('\u00a0');
+        } else {
+            palavra.push('_');
+        }
+
     }
 };
 
-function contarEspacos() {                                                  /* Cria a tela da forca com os "espaços" (no meu caso, os números) de cada letra */
+/* Cria os "espaços" que separam cada letra na tela do jogo */
+function contarEspacos() {
     let qntdd = '';
-    for (let i = 0; i < plvSecreta.value.length; i++) {
+    for (let i = 0; i < plvSecreta.length; i++) {
         qntdd += palavra[i] + ' ';
         lblForca.innerHTML = qntdd;
     }
 };
 
+/* Limpa a partida anterior e volta para a tela de escolher a palavra secreta */
 function reset() {
-    tentativas = 6;                                                         /* Reinicia o jogo e volta para a tela de escolher a palavra secreta */
+    tentativas = 6;
     divPrincipal.style.display = 'block';
     divJogo.style.display = null;
-    plvSecretaBase.value = '';                                              /* reseta a palavra secreta no input do HTML */
-    lblTentativas.innerHTML = tentativas;                                   /* reseta a quantidade de tentativas restantes */
+    plvSecretaBase.value = '';
+    lblTentativas.innerHTML = tentativas;
     plvSecretaBase.focus();
     erradas = [];
     certas = [];
@@ -92,33 +119,28 @@ function reset() {
 };
 
 function jogar(palavra) {
-
+    /* Se receber uma palavra, troca o texto do input 'plvSecretaBase' */
     if (typeof (palavra) === 'string' && palavra !== '') {
         plvSecretaBase.value = palavra;
+    }
+    /* Testa se tem alguma coisa escrita */
+    if (plvSecretaBase.value === '') {
+        alert('Por favor coloque uma palavra');
+    } else {
         divPrincipal.style.display = 'none';
         divJogo.style.display = 'block';
-        plvSecreta.value = plvSecretaBase.value.toUpperCase();
+        plvSecreta = plvSecretaBase.value.toUpperCase();
         separarLetras();
         contarEspacos();
         temporizador();
-    } else {
-        if (plvSecretaBase.value !== '') {                                  /* Testa se tem alguma coisa escrita */
-            divPrincipal.style.display = 'none';
-            divJogo.style.display = 'block';
-            plvSecreta.value = plvSecretaBase.value.toUpperCase();
-            separarLetras();
-            contarEspacos();
-            temporizador();
-        } else {
-            alert('Por favor coloque uma palavra');
-        }
     }
     letra.focus();
 };
 
+
 function temporizador() {
-    lblTempo.innerHTML = '120';
-    tempo = 120;
+    tempo = tempoIni;
+    lblTempo.innerHTML = tempo;
 
     timer = setInterval(contar, 1000);
     function contar() {
@@ -147,7 +169,7 @@ btnSair.addEventListener('click', function () {
 btnTestar.addEventListener('click',
     function () {
         lblTentativas.innerHTML = tentativas;
-        
+
         /* Pega o VALOR da variável 'letra', transforma em LETRA MAIUSCULA e manda retirar o acento */
         letraTeste = removeAcento(letra.value.toUpperCase());
 
@@ -157,7 +179,6 @@ btnTestar.addEventListener('click',
         } else {
             if (certas.includes(letraTeste) === false && erradas.includes(letraTeste) === false) {
                 let acertou = false;
-                let abc = '';
                 for (let i = 0; i < segredo.length; i++) {
                     if (letraTeste === removeAcento(segredo[i])) {
                         palavra[i] = segredo[i];
@@ -169,6 +190,7 @@ btnTestar.addEventListener('click',
                     certas.push(letraTeste);
                     acertou = false;
                 } else {
+                    if (tentativas > 1) { mudaCorFundo('#ff000055', 1, divJogo); }
                     erradas.push(letraTeste);
                     lblLetrasErradas.innerHTML = erradas;
                     tentativas--;
@@ -186,29 +208,38 @@ btnTestar.addEventListener('click',
                 alert('Você já testou esta letra. Por favor tente outra.');
             }
         }
-
-        let forca = lblForca.innerHTML;                                     /* Transforma o texto que aparece na tela em algo que o PC pode comparar */
-        for (let i = 0; i < lblForca.innerHTML.length; i++) {               /* Ex: de 'A B A C A T E' para 'ABACATE' e assim ver se completou a palavra*/
-            forca = forca.replace(' ', '');
-        }
-
-        if (forca === plvSecreta.value) {
-            setTimeout(ganhou, 100);
-            function ganhou() { alert('Você Ganhou!!!') };
-            setTimeout(reset, 200);
-        }
-        letra.focus();
+        testeGanhou();
     }
-)
+);
+
+/* Transforma o texto que aparece na tela em algo que o PC pode comparar */
+/* Ex: de 'A B A C A T E' para 'ABACATE' e assim ver se completou a palavra*/
+function testeGanhou() {
+    let forca = lblForca.innerHTML;
+    forca = forca.replaceAll(' ', '');
+    forca = forca.replaceAll('&nbsp;', ' ');
+
+    if (forca === plvSecreta) {
+        mudaCorFundo('#00ff0077', 3, body)
+        setTimeout(ganhou, 1750);
+        function ganhou() { alert('Você Ganhou!!!') };
+        setTimeout(reset, 1800);
+        pontos++;
+        lblPontos.innerHTML = pontos;
+    }
+    letra.focus();
+}
 
 function perdeu() {
-    setTimeout(perdeu, 100);
-    function perdeu() { alert('Você perdeu. A palavra secreta era: ' + plvSecreta.value) };
+    mudaCorFundo('#ff000099', 3, body)
+    setTimeout(msg, 1750);
+    function msg() { alert('Você perdeu. A palavra secreta era: ' + plvSecreta) };
     lblLetrasErradas.innerHTML = '';
-    setTimeout(reset, 200);
+    setTimeout(reset, 1800);
     clearInterval(timer);
 }
 
+/* Quando chamada, ativa o boneco de acordo com a quantid de tentativas e desativa os outros */
 function desenharBoneco() {
     const boneco = 6 - tentativas;
     for (let i = 0; i < 7; i++) {
@@ -216,6 +247,28 @@ function desenharBoneco() {
     }
 }
 
+/* Recebe uma letra/frase e remove o acento (funciona separando o Unicode do acento do da letra) */
+/* Ex: O caractere 'à' ('\u00e0') é a combinação do 'a' ('\u0061') com o acento '`' ('\u0300') */
+/* A função abaixo retira as marcas do \u0300 (`) até o \u036f (' ͯ ')*/
 function removeAcento(letra) {
     return letra.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
+
+function mudaCorFundo(cor, vezes, obj) {
+    let contaVezes = 0;
+    let corOriginal = body.style.backgroundColor;
+    function piscar() {
+        console.log(vezes, contaVezes);
+        if (contaVezes === vezes) { return; }
+        if (corOriginal === obj.style.backgroundColor) {
+            obj.style.backgroundColor = cor;
+            console.log('cor');
+        } else {
+            contaVezes++;
+            obj.style.backgroundColor = corOriginal;
+            console.log('corOriginal');
+        }
+        setTimeout(piscar, 250);
+    }
+    piscar();
+};
