@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <script type="module" src="code.js"></script>
-    <meta id="plvSecreta" value="" />
-    <title>Jogo da Forca</title>
-  </head>
-  <body>
-    <div id="divPrincipal">
-      <h1 class="titulo">A Forca</h1>
-      <pre>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="code.js"></script>
+  <meta id="plvSecreta" value="" />
+  <title>Jogo da Forca</title>
+</head>
+
+<body>
+  <div id="divPrincipal">
+    <h1 class="titulo">A Forca</h1>
+    <pre>
  ________
 /        |
 |        |      
@@ -22,34 +24,34 @@
 |      _/ \_
 |
 |
-        </pre
-      >
-      <label for="plvSecreta">Digite a palavra secreta:</label>
-      <br />
-      <input type="text" id="plvSecretaBase" />
-      <br />
-      <br />
-      <input type="button" id="btnJogar" value="Jogar" />
-      <br />
-      <br />
-      <br />
-      <br />
-      <label>Não quer escolher uma palavra? Te damos uma aleatória!</label>
-      <br />
-      <br />
-      <input type="button" id="btnPlvAleat" value="Palavra aleatória" />
-    </div>
+    </pre>
+    <label for="plvSecreta">Digite a palavra secreta:</label>
+    <br />
+    <input type="text" id="plvSecretaBase" />
+    <br />
+    <br />
+    <input type="button" id="btnJogar" value="Jogar" />
+    <br />
+    <br />
+    <br />
+    <br />
+    <label>Não quer escolher uma palavra? Te damos uma aleatória!</label>
+    <br />
+    <br />
+    <input type="button" id="btnPlvAleat" value="Palavra aleatória" />
+  </div>
 
-    <div id="divJogo">
-      <h1 class="titulo">A Forca</h1>
-      <label>Tempo restante: </label><label id="tempo">100</label><label>s.</label>
-      <br>
-      <label>Tentativas restantes:</label>
-      <label id="tentativas">6</label>
-      <br />
-      <label>Letras erradas:</label>
-      <label id="lblLetrasErradas"></label>
-      <br />
+  <div id="divJogo">
+    <h1 class="titulo">A Forca</h1>
+    <label>Tempo restante: </label><label id="tempo">100</label><label>s.</label>
+    <br>
+    <label>Tentativas restantes:</label>
+    <label id="tentativas">6</label>
+    <br />
+    <label>Letras erradas:</label>
+    <label id="lblLetrasErradas"></label>
+    <br />
+    <figure class="bonecos">
       <pre id="boneco0" style="display: block;">
  ________
 /        |
@@ -72,7 +74,7 @@
 |
 |
   </pre>
-  <pre id="boneco2" style="display: none;">
+      <pre id="boneco2" style="display: none;">
  ________
 /        |
 |        |      
@@ -83,7 +85,7 @@
 |
 |
 </pre>
-<pre id="boneco3" style="display: none;">
+      <pre id="boneco3" style="display: none;">
  ________
 /        |
 |        |      
@@ -93,7 +95,8 @@
 |      
 |
 |
-</pre><pre id="boneco4" style="display: none;">
+</pre>
+      <pre id="boneco4" style="display: none;">
  ________
 /        |
 |        |      
@@ -104,7 +107,7 @@
 |
 |
 </pre>
-<pre id="boneco5" style="display: none;">
+      <pre id="boneco5" style="display: none;">
  ________
 /        |
 |        |      
@@ -115,7 +118,7 @@
 |
 |
 </pre>
-<pre id="boneco6" style="display: none;">
+      <pre id="boneco6" style="display: none;">
  ________
 /        |
 |        |      
@@ -126,22 +129,22 @@
 |
 |
 </pre>
-      <br />
-      <label id="lblForca"></label>
-      <br />
-      <br />
-      <label for="letra">Letra </label>
-      <input type="text" id="letra" />
-      <input type="button" id="btnTestar" value="Testar" />
-      <br />
-      <br />
-      <input type="button" id="btnSair" value="Sair do jogo" />
-    </div>
-    <footer>
-      Feito por Rafael Herrera 2023© <br />
-      <a href="https://github.com/Redspe/Jogo-da-Forca"
-        >https://github.com/Redspe/Jogo-da-Forca</a
-      >
-    </footer>
-  </body>
+    </figure>
+    <br />
+    <label id="lblForca"></label>
+    <br />
+    <br />
+    <label for="letra">Letra </label>
+    <input type="text" id="letra" />
+    <input type="button" id="btnTestar" value="Testar" />
+    <br />
+    <br />
+    <input type="button" id="btnSair" value="Sair do jogo" />
+  </div>
+  <footer>
+    Feito por Rafael Herrera 2023© <br />
+    <a href="https://github.com/Redspe/Jogo-da-Forca">https://github.com/Redspe/Jogo-da-Forca</a>
+  </footer>
+</body>
+
 </html>
