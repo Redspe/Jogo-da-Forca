@@ -1,20 +1,20 @@
-# Jogo da Forca
--- placeholder do resumo --
+# [Jogo da Forca](https://redspe.github.io/Jogo-da-Forca/)
+
+O Famoso jogo que toda criança já jogou! Aqui você pode dar uma palavra e desafiar seus amigos ou o jogo desafiar você!
 
 # Features:
 ### Muito além de só palavras!
-- Aqui não jogamos somente com palavras, mas com frases também! Quer usar uma fala de um filme? Sem problemas! É possível jogar com quantas palavras quiser em uma única jogada.
-- Quer irritar seu amigo colocando uma palavra gigantesca como _pneumoultramicroscopicossilicovulcanoconiótico_ ? Aqui você pode! Escreva o que quiser na caixa de texto que o jogo vai deixá-la pronta para jogar.
-- Letras com acento ou cedilha eram consideradas diferentes das letras normais e não eram consideradas se testadas, agora tudo deve funcionar perfeitamente.
-- Com os pontos, enquanto você manter a página aberta o jogo guardará a quantidade de vezes que acertou!
+- Aqui não jogamos somente com palavras, mas com frases também! Quer usar uma fala de um filme? Sem problemas! É possível jogar com quantas palavras quiser.
 
-### _Já é natal?_ 🎄 
-- Para animar o jogo, ao testar as letras o jogo pisca a área de jogo para indicar se você acertou ou se errou, o mesmo acontece ao ganhar ou perder, porém é a página inteira.
+### Quer irritar seu amigo com _pneumoultramicroscopicossilicovulcanoconiótico_ ? 
+- Aqui você pode! Escreva o que quiser na caixa de texto que o jogo vai preparará para você jogar.
 
-  
-  
- 
+### Nao entedeu a palavra 'natação' porque ela estava como 'natacao'? 
+- Não neste jogo! Todas as palavras podem ter acentos e não interferirão no funcionamento do jogo!
 
-### Futuras melhorias:
-- Eu provavelmente deveria colocar um modo para pessoas com epilepsia né?
+###  É Mais de oito mil!!!
+- Com os pontos, o jogo guardará a quantidade de vezes que acertou! (desde que você não perca nenhuma vez 😊)
+
+### 🎄 _Já é natal?_ 
+- Para animar o jogo, ao testar as letras o jogo troca a cor do fundo para indicar se você acertou ou se errou, o mesmo acontece ao ganhar ou perder.
 
