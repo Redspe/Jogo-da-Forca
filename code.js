@@ -1,3 +1,5 @@
+import dicionario from './dicionario.js';
+
 const divPrincipal = document.querySelector('#divPrincipal');
 const divJogo = document.querySelector('#divJogo');
 const btnJogar = document.querySelector('#btnJogar');
@@ -12,23 +14,11 @@ const lblLetrasErradas = document.querySelector('#lblLetrasErradas');
 const lblTempo = document.querySelector('#tempo');
 const lblPontos = document.querySelector('#pontos');
 const body = document.querySelector('#body');
+const divDica = document.querySelector('#divDica');
+const dica = document.querySelector('#dica');
+const chkDica = document.querySelector('#chkDica');
 
-/* Última vez contado: 119 palavras */
-const plvsAleatorias = [
-    'Abacate', 'Morango', 'Escada', 'Criança', 'Fralda', 'Leão', 'Pássaro', 'Natação', 'Banho',
-    'Academia', 'Faca', 'Banana', 'Chave', 'Sapato', 'Relógio', 'Bolsa', 'Abraço', 'Beijo', 'Flores',
-    'Bateria', 'Carro', 'Moto', 'Colar', 'Brinco', 'Casa', 'Igreja', 'Macaco', 'Chá', 'Dançar', 'Sol',
-    'Árvore', 'Música', 'Pizza', 'Sorvete', 'Ônibus', 'Maçã', 'Espelho', 'Guitarra', 'Livro', 'Estrela',
-    'Balão', 'Avião', 'Elefante', 'Bola', 'Bebê', 'Peixe', 'Futebol', 'Toalha', 'Papel higiênico',
-    'Basquete', 'Controle remoto', 'Triste', 'Gato', 'Golfe', 'Tesoura', 'Colher', 'Pular', 'Galinha',
-    'Sapo', 'Espirro', 'Martelo', 'Violão', 'Aplaudir', 'Tosse', 'Chifres', 'Pinguim', 'Chorar', 'Rabo',
-    'Piada', 'Escova de dente', 'Celular', 'Cachorro', 'Pato', 'Sofá', 'Fotógrafo', 'Óculos', 'Balé',
-    'Pipa', 'Café', 'Táxi', 'Cadeira', 'Elevador', 'Bicicleta', 'Fogão', 'Copo', 'Orelhas', 'Chocolate',
-    'Pescador', 'Notebook', 'Lápis', 'JavaScript', 'HTML', 'CSS', 'Internet', 'WWW', 'Google', 'ChatGPT',
-    'Python', 'Programação', 'Jogos', 'VSCode', 'Chrome', 'FireFox', 'Microsoft', 'Apple', 'Windows',
-    'Algoritmo', 'Nuvem', 'Linux', 'Harware', 'Software', 'Java', 'Bug', 'Antivírus', 'Backup',
-    'Bluetooth', 'Computador', 'Endereço IP', 'VPN'
-];
+let objPalavra;
 let plvSecreta = '';
 let letraTeste = '';
 let tentativas = 6;
@@ -40,21 +30,31 @@ let pontos = 0;
 const tempoIni = 120;
 let tempo = tempoIni;
 let timer;
+const pontosStorage = localStorage.getItem('pontos');
+if (pontosStorage !== null) pontos = Number(pontosStorage);
+lblPontos.innerHTML = pontos;
 
 /* 
     Para arrumar:
-    - Colocar dicas das palavras caso só falte 2-3 tentativas
+    - Página de configurações
+        - Adicionar Modo Escuro
+        - Mudar Tempo até perder
+        - Quantidade de erros para dica
+        - 
+    
+    - Adicionar botão de 'jogar novamente' (mudar o q acontece ao perder/morrer)
     - Deixar a página mais estilizada
     - Otimizar o código
+    - Botão para mostrar as dicas (elas aparecem escondidas e tem um 'olho' para mostrar)
 */
 
 /* 
     Feitos (para facilitar versionamento):
-    - Adicionar frases compostas
-    - Timer único (sem ter que mudar vários lugares)
-    - Terminar a função acentos
-    - Terminar mudança da cor de fundo
-    - Terminar a função pontos
+    - Palavras com hífen (-) não mostram corretamente
+    - Palavras em dicionário
+    - Colocar dicas das palavras caso só falte 1 tentativa
+    - Salvar a pontuação no localStorage do browser
+    - Pontos resetam ao perder uma partida
 */
 
 divPrincipal.addEventListener("keypress", function (event) {
@@ -72,8 +72,12 @@ divJogo.addEventListener("keypress", function (event) {
 });
 
 btnPlvAleat.addEventListener('click', function palavraAleatoria() {
-    const numAleat = Math.floor(Math.random() * plvsAleatorias.length);
-    jogar(plvsAleatorias[numAleat]);
+    objPalavra = dicionario.getPalavra();
+    jogar(objPalavra.nome);
+});
+
+chkDica.addEventListener('click', function () {
+    mostraDica();
 });
 
 function separarLetras() {
@@ -88,9 +92,12 @@ function separarLetras() {
         if (plvSecreta[i].includes(' ')) {
             palavra.push('\u00a0');
         } else {
-            palavra.push('_');
+            if (plvSecreta[i].includes('-')) {
+                palavra.push('-');
+            } else {
+                palavra.push('_');
+            }
         }
-
     }
 };
 
@@ -116,6 +123,7 @@ function reset() {
     lblLetrasErradas.innerHTML = '';
     desenharBoneco();
     clearInterval(timer);
+    mostraDica();
 };
 
 function jogar(palavra) {
@@ -190,10 +198,11 @@ btnTestar.addEventListener('click',
                     certas.push(letraTeste);
                     acertou = false;
                 } else {
-                    if (tentativas > 1) { mudaCorFundo('#ff000055', 1, divJogo); }
+                    tentativas--;
+                    if (tentativas > 0) mudaCorFundo('#ffff00', 1, body);
+                    mostraDica();
                     erradas.push(letraTeste);
                     lblLetrasErradas.innerHTML = erradas;
-                    tentativas--;
                     desenharBoneco();
                     if (tentativas === 0) {
                         perdeu();
@@ -219,24 +228,24 @@ function testeGanhou() {
     forca = forca.replaceAll(' ', '');
     forca = forca.replaceAll('&nbsp;', ' ');
 
-    if (forca === plvSecreta) {
-        mudaCorFundo('#00ff0077', 3, body)
+    if (forca === plvSecreta && plvSecreta !== '') {
+        mudaCorFundo('#00ff0077', 2, body)
         setTimeout(ganhou, 1750);
         function ganhou() { alert('Você Ganhou!!!') };
         setTimeout(reset, 1800);
-        pontos++;
-        lblPontos.innerHTML = pontos;
+        atualizaPontos(++pontos);
     }
     letra.focus();
 }
 
 function perdeu() {
     mudaCorFundo('#ff000099', 3, body)
-    setTimeout(msg, 1750);
+    setTimeout(msg, 2600);
     function msg() { alert('Você perdeu. A palavra secreta era: ' + plvSecreta) };
     lblLetrasErradas.innerHTML = '';
-    setTimeout(reset, 1800);
+    setTimeout(reset, 2700);
     clearInterval(timer);
+    atualizaPontos(0);
 }
 
 /* Quando chamada, ativa o boneco de acordo com a quantid de tentativas e desativa os outros */
@@ -256,19 +265,37 @@ function removeAcento(letra) {
 
 function mudaCorFundo(cor, vezes, obj) {
     let contaVezes = 0;
-    let corOriginal = body.style.backgroundColor;
+    let corOriginal = '';
     function piscar() {
-        console.log(vezes, contaVezes);
         if (contaVezes === vezes) { return; }
         if (corOriginal === obj.style.backgroundColor) {
             obj.style.backgroundColor = cor;
-            console.log('cor');
         } else {
             contaVezes++;
             obj.style.backgroundColor = corOriginal;
-            console.log('corOriginal');
         }
-        setTimeout(piscar, 250);
+        setTimeout(piscar, 500);
     }
     piscar();
+};
+
+function mostraDica() {
+    if (tentativas < 2 && typeof (objPalavra) !== 'undefined') {
+        if (objPalavra.dica !== undefined) {
+            divDica.style.display = 'block';
+            if (chkDica.checked) {
+                dica.innerHTML = objPalavra.dica;
+            } else {
+                dica.innerHTML = '';
+            }
+        }
+    } else {
+        chkDica.checked = false;
+        divDica.style.display = '';
+    }
+};
+
+function atualizaPontos(pontos) {
+    localStorage.setItem('pontos', pontos);
+    lblPontos.innerHTML = pontos;
 };
