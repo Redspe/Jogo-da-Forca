@@ -1,5 +1,5 @@
 # Jogo da Forca
-Quer testar o jogo? Clique [aqui](https://redspe.github.io/Jogo-da-Forca/).
+Quer testar o jogo? Clique [aqui](https://redspe.github.io/Jogo-da-Forca/). Não é necessário baixar nada! Ele roda no seu navegador.
 
 O Famoso jogo que toda criança já jogou! Aqui você pode dar uma palavra e desafiar seus amigos ou o jogo desafiar você!
 
