@@ -15,7 +15,7 @@
   <label>Pontos em sequência: </label><label id="pontos">0</label>
   <br><br>
   <div id="divPrincipal">
-    <pre>
+    <pre id="bonecoPrincipal">
  ________
 //-------|
 ||       |      
@@ -31,7 +31,7 @@
     <input type="text" id="plvSecretaBase">
     <br>
     <br>
-    <input type="button" id="btnJogar" value="Jogar">
+    <button type="button" id="btnJogar">Jogar</button>
     <br>
     <br>
     <br>
@@ -39,7 +39,9 @@
     <label>Não quer escolher uma palavra? Te damos uma aleatória!</label>
     <br>
     <br>
-    <input type="button" id="btnPlvAleat" value="Palavra aleatória">
+    <button type="button" id="btnPlvAleat">Palavra aleatória</button>
+    <br>
+    <button type="button" id="btnConfig">Configurações</button>
   </div>
 
   <div id="divJogo">
@@ -142,13 +144,17 @@
     </div>
     <br>
     <br>
-    <label for="letra">Letra </label>
-    <input type="text" id="letra" maxlength="1">
-    <input type="button" id="btnTestar" value="Testar">
+    <input type="text" id="letra" maxlength="1" placeholder="Letra">
+    <button id="btnTestar">Testar</button>
     <br>
     <br>
-    <input type="button" id="btnSair" value="Sair do jogo">
+    <button id="btnSair">Sair do jogo</button>
   </div>
+
+  <div id="divConfig">
+
+  </div>
+
   <footer>
     Feito por Rafael Herrera 2023© <br>
     <address>

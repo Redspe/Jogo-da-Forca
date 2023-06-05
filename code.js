@@ -27,7 +27,7 @@ let palavra = [];
 let erradas = [];
 let certas = [];
 let pontos = 0;
-const tempoIni = 120;
+const tempoIni = 200;
 let tempo = tempoIni;
 let timer;
 const pontosStorage = localStorage.getItem('pontos');
@@ -41,20 +41,18 @@ lblPontos.innerHTML = pontos;
         - Mudar Tempo até perder
         - Quantidade de erros para dica
         - 
-    
+    - Otimizar os bonecos
     - Adicionar botão de 'jogar novamente' (mudar o q acontece ao perder/morrer)
     - Deixar a página mais estilizada
     - Otimizar o código
-    - Botão para mostrar as dicas (elas aparecem escondidas e tem um 'olho' para mostrar)
 */
 
 /* 
     Feitos (para facilitar versionamento):
-    - Palavras com hífen (-) não mostram corretamente
-    - Palavras em dicionário
-    - Colocar dicas das palavras caso só falte 1 tentativa
-    - Salvar a pontuação no localStorage do browser
-    - Pontos resetam ao perder uma partida
+    - Ao perder a caixa da letra de teste é bloqueada para evitar spamming de letras
+    - Não é permitido somente caracteres como palavra
+    - Frases muito grandes quebravam as palavras ao meio
+    - Mudei os botões e funções de lugar para melhor visualização
 */
 
 divPrincipal.addEventListener("keypress", function (event) {
@@ -80,6 +78,57 @@ chkDica.addEventListener('click', function () {
     mostraDica();
 });
 
+/* Configura o jogo para começar */
+btnJogar.addEventListener('click', function () {
+    jogar();
+});
+
+/* Botão para sair da partida */
+btnSair.addEventListener('click', function () {
+    reset();
+});
+
+
+
+
+
+function jogar(palavra) {
+    /* Se receber uma palavra, troca o texto do input 'plvSecretaBase' */
+    if (typeof (palavra) === 'string' && palavra !== '') {
+        plvSecretaBase.value = palavra;
+    }
+    let caracPermitidos = /[\u0030-\u0039\u0041-\u005a\u0061-\u007a]/g
+    /* Testa se tem alguma coisa escrita */
+    if (plvSecretaBase.value !== '' && removeAcento(plvSecretaBase.value).match(caracPermitidos)) {
+        divPrincipal.style.display = 'none';
+        divJogo.style.display = 'block';
+        plvSecreta = plvSecretaBase.value.toUpperCase();
+        separarLetras();
+        contarEspacos();
+        temporizador();
+        letra.focus();
+    } else {
+        alert('Por favor coloque uma palavra');
+    }
+};
+
+/* Limpa a partida anterior e volta para a tela de escolher a palavra secreta */
+function reset() {
+    tentativas = 6;
+    divPrincipal.style.display = 'block';
+    divJogo.style.display = null;
+    plvSecretaBase.value = '';
+    lblTentativas.innerHTML = tentativas;
+    letra.disabled = false;
+    plvSecretaBase.focus();
+    erradas = [];
+    certas = [];
+    lblLetrasErradas.innerHTML = '';
+    desenharBoneco();
+    clearInterval(timer);
+    mostraDica();
+};
+
 function separarLetras() {
     /* reseta o array para que limpe os dados da outra partida */
     segredo = [];
@@ -90,7 +139,7 @@ function separarLetras() {
         segredo.push(plvSecreta[i]);
         /* Se a 'palavra' dada tiver espaços (ou seja, é uma frase) colocar espaços para separar */
         if (plvSecreta[i].includes(' ')) {
-            palavra.push('\u00a0');
+            palavra.push('\u00a0' + '<wbr>');
         } else {
             if (plvSecreta[i].includes('-')) {
                 palavra.push('-');
@@ -105,46 +154,10 @@ function separarLetras() {
 function contarEspacos() {
     let qntdd = '';
     for (let i = 0; i < plvSecreta.length; i++) {
-        qntdd += palavra[i] + ' ';
-        lblForca.innerHTML = qntdd;
+        qntdd += palavra[i] + '&nbsp;';
     }
+    lblForca.innerHTML = qntdd;
 };
-
-/* Limpa a partida anterior e volta para a tela de escolher a palavra secreta */
-function reset() {
-    tentativas = 6;
-    divPrincipal.style.display = 'block';
-    divJogo.style.display = null;
-    plvSecretaBase.value = '';
-    lblTentativas.innerHTML = tentativas;
-    plvSecretaBase.focus();
-    erradas = [];
-    certas = [];
-    lblLetrasErradas.innerHTML = '';
-    desenharBoneco();
-    clearInterval(timer);
-    mostraDica();
-};
-
-function jogar(palavra) {
-    /* Se receber uma palavra, troca o texto do input 'plvSecretaBase' */
-    if (typeof (palavra) === 'string' && palavra !== '') {
-        plvSecretaBase.value = palavra;
-    }
-    /* Testa se tem alguma coisa escrita */
-    if (plvSecretaBase.value === '') {
-        alert('Por favor coloque uma palavra');
-    } else {
-        divPrincipal.style.display = 'none';
-        divJogo.style.display = 'block';
-        plvSecreta = plvSecretaBase.value.toUpperCase();
-        separarLetras();
-        contarEspacos();
-        temporizador();
-    }
-    letra.focus();
-};
-
 
 function temporizador() {
     tempo = tempoIni;
@@ -164,20 +177,8 @@ function temporizador() {
     }
 };
 
-/* Configura o jogo para começar */
-btnJogar.addEventListener('click', function () {
-    jogar();
-});
-
-/* Botão para sair da partida */
-btnSair.addEventListener('click', function () {
-    reset();
-});
-
 btnTestar.addEventListener('click',
-    function () {
-        lblTentativas.innerHTML = tentativas;
-
+    function testaLetra() {
         /* Pega o VALOR da variável 'letra', transforma em LETRA MAIUSCULA e manda retirar o acento */
         letraTeste = removeAcento(letra.value.toUpperCase());
 
@@ -187,13 +188,15 @@ btnTestar.addEventListener('click',
         } else {
             if (certas.includes(letraTeste) === false && erradas.includes(letraTeste) === false) {
                 let acertou = false;
+                /* Muda os '_' por letras */
                 for (let i = 0; i < segredo.length; i++) {
                     if (letraTeste === removeAcento(segredo[i])) {
                         palavra[i] = segredo[i];
-                        lblForca.innerHTML = palavra;
                         acertou = true;
                     }
                 }
+                /* Fazer: Pegar o de baixo, transformar em string e depois jogar no html 'lblForca' */
+                lblForca.innerHTML = palavra;
                 if (acertou === true) {
                     certas.push(letraTeste);
                     acertou = false;
@@ -208,16 +211,14 @@ btnTestar.addEventListener('click',
                         perdeu();
                     }
                 }
-                while (lblForca.innerHTML.includes(',') === true) {
-                    lblForca.innerHTML = lblForca.innerHTML.replace(',', ' ');
-                }
+                lblForca.innerHTML = lblForca.innerHTML.replaceAll(',', '\u00a0');
                 lblTentativas.innerHTML = tentativas;
-                letra.value = '';
             } else {
                 alert('Você já testou esta letra. Por favor tente outra.');
             }
+            testeGanhou();
         }
-        testeGanhou();
+        letra.value = '';
     }
 );
 
@@ -225,24 +226,26 @@ btnTestar.addEventListener('click',
 /* Ex: de 'A B A C A T E' para 'ABACATE' e assim ver se completou a palavra*/
 function testeGanhou() {
     let forca = lblForca.innerHTML;
-    forca = forca.replaceAll(' ', '');
-    forca = forca.replaceAll('&nbsp;', ' ');
+    forca = forca.replaceAll(/['&nbsp;' '<wbr>']/g, '');
 
-    if (forca === plvSecreta && plvSecreta !== '') {
+    let teste = plvSecreta;
+    teste = teste.replaceAll(' ', '')
+
+    if (forca === teste && teste !== '') {
         mudaCorFundo('#00ff0077', 2, body)
-        setTimeout(ganhou, 1750);
+        setTimeout(ganhou, 2600);
         function ganhou() { alert('Você Ganhou!!!') };
-        setTimeout(reset, 1800);
+        setTimeout(reset, 2700);
         atualizaPontos(++pontos);
     }
     letra.focus();
 }
 
 function perdeu() {
+    letra.disabled = true;
     mudaCorFundo('#ff000099', 3, body)
     setTimeout(msg, 2600);
     function msg() { alert('Você perdeu. A palavra secreta era: ' + plvSecreta) };
-    lblLetrasErradas.innerHTML = '';
     setTimeout(reset, 2700);
     clearInterval(timer);
     atualizaPontos(0);
@@ -266,6 +269,7 @@ function removeAcento(letra) {
 function mudaCorFundo(cor, vezes, obj) {
     let contaVezes = 0;
     let corOriginal = '';
+    piscar();
     function piscar() {
         if (contaVezes === vezes) { return; }
         if (corOriginal === obj.style.backgroundColor) {
@@ -276,7 +280,6 @@ function mudaCorFundo(cor, vezes, obj) {
         }
         setTimeout(piscar, 500);
     }
-    piscar();
 };
 
 function mostraDica() {
