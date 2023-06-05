@@ -1,9 +1,11 @@
 # Jogo da Forca
-Quer testar o jogo? Clique [aqui](https://redspe.github.io/Jogo-da-Forca/). Não é necessário baixar nada! Ele roda no seu navegador.
 
 O Famoso jogo que toda criança já jogou! Aqui você pode dar uma palavra e desafiar seus amigos ou o jogo desafiar você!
 
 Projeto feito em HTML, CSS e JavaScript como parte de um exercício em sala Realizado por Rafael Herrera, o cridador deste repositório. Sabe otimizar o código? Mande um Pull-request que olharei as mudanças.
+
+# Quer testar o jogo? Clique [aqui](https://redspe.github.io/Jogo-da-Forca/). 
+Não é necessário baixar nada! Ele roda no seu navegador.
 
 # Features:
 ### Muito além de só palavras!
