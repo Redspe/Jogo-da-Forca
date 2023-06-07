@@ -4,13 +4,13 @@ body {
     text-align: center;
     margin: 0;
     min-height: 100%;
-    background-color: #a1b2c3;
+    background-color: rgb(190, 195, 205);
     transition: background-color 500ms;
 }
 
 input, button, select {
     font-size: 14px;
-    background-color: #ccddee;
+    background-color: rgb(230, 235, 245);
     border: #556677 1px solid;
     border-radius: 15px;
     margin: 10px 0;
@@ -57,6 +57,7 @@ h1 {
     margin: auto;
     padding: 22px;
 }
+
 h2 {
     font-weight: 500;
 }

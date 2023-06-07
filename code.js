@@ -74,27 +74,19 @@ if (piscaStorage !== null) {
 chkPiscaFundo.checked = piscarOn;
 
 /* 
-    Para arrumar:
-    - Piscada quando recarrega a página (transition) (ativar após carregar a pag)
-    - Pisca fundo
-    - tirar a palavra do plvSecretaBase por segurança
-    - Página de configurações
-        
+    Para arrumar:         
     - Ao sair no meio do jogo, mostrar a palavra
     - Otimizar os bonecos
     - Adicionar botão de 'jogar novamente' (mudar o q acontece ao perder/morrer)
     - Deixar a página mais estilizada
     - Otimizar o código
+    - tirar a palavra do plvSecretaBase por segurança
 */
 
 /* 
     Feitos (para facilitar versionamento):
-    - Página de configurações
-            - Adicionar Modo Escuro
-            - Mudar Tempo até perder
-            - Quantidade de erros para dica
-            - Pisca cor do fundo
-    - Salvando as config no browser
+    - Adicionado ícone
+    - Pisca fundo consertado
 */
 
 divPrincipal.addEventListener("keypress", function (event) {
@@ -170,9 +162,9 @@ function seletorTema() {
 
     switch (slctTema.selectedIndex) {
         case 0:
-            corFundo = '#a1b2c3';
-            document.body.style.backgroundColor = '';
-            document.body.style.color = '';
+            corFundo = 'rgb(161, 178, 195)';
+            body.style.backgroundColor = 'rgb(190, 195, 205)';
+            body.style.color = '#000';
             for (let i = 0; i < allInputs.length; i++) {
                 allInputs[i].style.backgroundColor = null;
                 allInputs[i].style.color = null;
@@ -180,8 +172,8 @@ function seletorTema() {
             break;
 
         case 1:
-            corFundo = '#313233';
-            document.body.style.backgroundColor = '#313233';
+            corFundo = 'rgb(49, 50, 51)';
+            document.body.style.backgroundColor = 'rgb(49, 50, 51)';
             document.body.style.color = '#eee';
             for (let i = 0; i < allInputs.length; i++) {
                 allInputs[i].style.backgroundColor = '#515253';
@@ -303,7 +295,7 @@ btnTestar.addEventListener('click',
                     acertou = false;
                 } else {
                     tentativas--;
-                    if (tentativas > 0) mudaCorFundo('#ffff00', 1, body);
+                    if (tentativas > 0) mudaCorFundo('#cccc15', 1, body);
                     mostraDica();
                     erradas.push(letraTeste);
                     lblLetrasErradas.innerHTML = erradas;
@@ -334,9 +326,9 @@ function testeGanhou() {
 
     if (forca === teste && teste !== '') {
         mudaCorFundo('#00ff0077', 2, body)
-        setTimeout(ganhou, 2600);
+        setTimeout(ganhou, 3000);
         function ganhou() { alert('Você Ganhou!!!') };
-        setTimeout(reset, 2700);
+        setTimeout(reset, 3100);
         atualizaPontos(++pontos);
     }
     letra.focus();
@@ -345,9 +337,9 @@ function testeGanhou() {
 function perdeu() {
     letra.disabled = true;
     mudaCorFundo('#ff000099', 3, body)
-    setTimeout(msg, 2600);
+    setTimeout(msg, 3000);
     function msg() { alert('Você perdeu. A palavra secreta era: ' + plvSecreta) };
-    setTimeout(reset, 2700);
+    setTimeout(reset, 3100);
     clearInterval(timer);
     atualizaPontos(0);
 }
@@ -373,7 +365,6 @@ function mudaCorFundo(cor, vezes, obj) {
         let corOriginal = corFundo;
         piscar();
         function piscar() {
-            console.log('pisca');
             if (contaVezes === vezes) { return; }
             if (corOriginal === document.body.style.backgroundColor) {
                 document.body.style.backgroundColor = cor;
