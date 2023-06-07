@@ -1,6 +1,6 @@
 const dicionario = {};
 
-/* Última vez contado: 119 palavras */
+/* Última vez contado: 120 palavras */
 const db = [
     { nome: 'Abacate', dica: 'Fruta' }, 
     { nome: 'Morango', dica: 'Fruta' }, 
@@ -42,7 +42,7 @@ const db = [
     { nome: 'Guitarra', dica: 'Rock' }, 
     { nome: 'Livro', dica: 'Papel' }, 
     { nome: 'Estrela', dica: 'Céu' }, 
-    { nome: 'Balão', dica: 'Colorido e voa' }, 
+    { nome: 'Balão', dica: 'Usa ar quente para subir' }, 
     { nome: 'Avião', dica: 'Voo' }, 
     { nome: 'Elefante', dica: 'Grande' }, 
     { nome: 'Bola', dica: 'Redonda' }, 
@@ -127,8 +127,8 @@ const db = [
 /* Template do Dicionário
 
 const db = [
-    { nome: 'abacate' dica: 'fruta'},
-    { nome: ''}, 
+    { nome: 'abacate', dica: 'fruta'},
+    { nome: '', dica:''}, 
     { nome: ''}, 
     { nome: ''}
 ];

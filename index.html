@@ -12,8 +12,7 @@
 
 <body id="body">
   <h1 class="titulo">Jogo da Forca</h1>
-  <label>Pontos em sequência: </label><label id="pontos">0</label>
-  <br><br>
+  <div id="divPontos"><label>Pontos em sequência: </label><label id="pontos">0</label></div>
   <div id="divPrincipal">
     <pre id="bonecoPrincipal">
  ________
@@ -28,30 +27,25 @@
     </pre>
     <label for="plvSecretaBase">Digite a palavra secreta:</label>
     <br>
-    <input type="text" id="plvSecretaBase">
+    <input type="text" id="plvSecretaBase" class="inputs">
     <br>
-    <br>
-    <button type="button" id="btnJogar">Jogar</button>
-    <br>
+    <button type="button" id="btnJogar" class="inputs">Jogar</button>
     <br>
     <br>
     <br>
     <label>Não quer escolher uma palavra? Te damos uma aleatória!</label>
     <br>
+    <button type="button" id="btnPlvAleat" class="inputs">Palavra aleatória</button>
     <br>
-    <button type="button" id="btnPlvAleat">Palavra aleatória</button>
-    <br>
-    <button type="button" id="btnConfig">Configurações</button>
+    <button type="button" id="btnConfig" class="inputs">Configurações</button>
   </div>
 
   <div id="divJogo">
+    <br>
     <label>Tempo restante: </label><label id="tempo">120</label><label>s.</label>
     <br>
     <label>Tentativas restantes:</label>
     <label id="tentativas">6</label>
-    <br>
-    <label>Letras erradas:</label>
-    <label id="lblLetrasErradas"></label>
     <br>
 
     <div id="bonecos">
@@ -140,19 +134,51 @@
     <br>
     <div id="divDica">
       <input id="chkDica" type="checkbox">
-      <span>Dica: </span> <span id="dica"></span>
+      <span>Dica: </span><span id="dica"></span>
     </div>
     <br>
+    <label>Letras erradas:</label>
+    <label id="lblLetrasErradas"></label>
     <br>
-    <input type="text" id="letra" maxlength="1" placeholder="Letra">
-    <button id="btnTestar">Testar</button>
+    <br>
+    <input type="text" id="letra" maxlength="1" placeholder="Letra" class="inputs">
+    <button id="btnTestar" class="inputs">Testar</button>
     <br>
     <br>
-    <button id="btnSair">Sair do jogo</button>
+    <button id="btnSair" class="inputs">Sair do jogo</button>
   </div>
 
   <div id="divConfig">
+    <h2>Configurações</h2>
+    <table>
 
+      <tr>
+        <td><label title="Deixa a tela com cores escuras, claras, etc.">Tema:</label></td>
+        <td>
+          <select id="slctTema" class="inputs" title="Deixa a tela com cores escuras, claras, etc.">
+            <option value="claro">Claro</option>
+            <option value="Escuro">Escuro</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td><label title="Tempo disponível para resolver a palavra/frase">Tempo de jogo (seg):</label></td>
+        <td><input id="inputTmpJogo" class="inputs" type="number" value="200" step="10" title="Tempo disponível para resolver a palavra/frase"></td>
+      </tr>
+
+      <tr>
+        <td><label title="Quantidade de tentativas restantes até que mostre a dica">Erros até a dica:</label></td>
+        <td><input id="inputQntErros" class="inputs" type="number" value="1" title="Quantidade de tentativas restantes até que mostre a dica"></td>
+      </tr>
+
+      <tr>
+        <td><label title="Liga/desliga a função que pisca o fundo para indicar se o jogador acertou ou errou a letra">Pisca cor do fundo:</label></td>
+        <td><input id="chkPiscaFundo" class="inputs" type="checkbox" checked title="Liga/desliga a função que pisca o fundo para indicar se o jogador acertou ou errou a letra"></td>
+      </tr>
+
+    </table>
+    <button id="btnVoltar" class="inputs">Voltar ao Menu</button>
   </div>
 
   <footer>

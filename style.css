@@ -8,34 +8,33 @@ body {
     transition: background-color 500ms;
 }
 
+input, button, select {
+    font-size: 14px;
+    background-color: #ccddee;
+    border: #556677 1px solid;
+    border-radius: 15px;
+    margin: 10px 0;
+}
+
 input {
     height: 22px;
     width: 188px;
-    font-size: 14px;
-    background-color: #ccddee;
-    border: #556677 1px solid;
     padding: 3px 5px;
-    border-radius: 15px;
 }
 
-input:hover {
+input:hover, button:hover, select:hover {
     background-color: #ddeeff;
     border-color: #26a0da; 
 }
 
-button {
+select:hover {
+    border-radius: 15px 0 0 15px;
+}
+
+button, select {
     height: 30px;
     width: 200px;
-    font-size: 14px;
-    background-color: #ccddee;
-    border: #556677 1px solid;
     padding: 5px 5px;
-    border-radius: 15px;
-}
-
-button:hover {
-    background-color: #ddeeff;
-    border-color: #26a0da; 
 }
 
 footer {
@@ -58,6 +57,9 @@ h1 {
     margin: auto;
     padding: 22px;
 }
+h2 {
+    font-weight: 500;
+}
 
 pre {
     text-align:left;
@@ -65,18 +67,56 @@ pre {
     margin: auto;
 }
 
+table {
+    text-align: right;
+    margin: auto;
+}
+
+table button, select {
+    width: 75px;
+}
+
+table input {
+    width: 58px;
+    padding-left: 10px;
+}
+
+td {
+    height: 50px;
+    padding: 0 5px;
+}
+
+td:nth-child(2) {
+    text-align: left;
+}
+
+#divPrincipal {
+    display: block;
+}
+
 #divJogo {
     display: none;
-    padding-bottom: 75px;
+    padding-bottom: 65px;
+}
+
+#divConfig {
+    display: none;
+    padding-bottom: 65px;
+}
+
+#chkPiscaFundo {
+    width: 14px;
 }
 
 #divDica {
     display: none;
+    height: 19px;
 }
 
 #chkDica {
     width: 13px;
-    margin: 0;
+    position: relative;
+    top: 5px;
 }
 
 #letra {
@@ -89,13 +129,14 @@ pre {
     padding: 0 50px;
 } 
 
-#btnConfig {
+#btnConfig, #btnSair, #btnVoltar {
     position: absolute;
-    bottom: 75px;
+    bottom: 65px;
     left: calc(50vw - 100px);
 }
 
 #bonecoPrincipal {
+    margin-top: 20px;
     font-size: 14px;
 }
 

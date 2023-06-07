@@ -2,10 +2,22 @@ import dicionario from './dicionario.js';
 
 const divPrincipal = document.querySelector('#divPrincipal');
 const divJogo = document.querySelector('#divJogo');
+const divConfig = document.querySelector('#divConfig');
+const divPontos = document.querySelector('#divPontos');
+const divDica = document.querySelector('#divDica');
+
 const btnJogar = document.querySelector('#btnJogar');
 const btnSair = document.querySelector('#btnSair');
+const btnVoltar = document.querySelector('#btnVoltar');
 const btnTestar = document.querySelector('#btnTestar');
 const btnPlvAleat = document.querySelector('#btnPlvAleat');
+const chkDica = document.querySelector('#chkDica');
+const slctTema = document.querySelector('#slctTema');
+const inputTmpJogo = document.querySelector('#inputTmpJogo');
+const inputQntErros = document.querySelector('#inputQntErros');
+const chkPiscaFundo = document.querySelector('#chkPiscaFundo');
+const allInputs = document.querySelectorAll('.inputs')
+
 const plvSecretaBase = document.querySelector('#plvSecretaBase');
 const letra = document.querySelector('#letra');
 const lblForca = document.querySelector('#lblForca');
@@ -14,10 +26,12 @@ const lblLetrasErradas = document.querySelector('#lblLetrasErradas');
 const lblTempo = document.querySelector('#tempo');
 const lblPontos = document.querySelector('#pontos');
 const body = document.querySelector('#body');
-const divDica = document.querySelector('#divDica');
 const dica = document.querySelector('#dica');
-const chkDica = document.querySelector('#chkDica');
 
+let corFundo = '';
+let tema = 0;
+let qntErros = 1;
+let piscarOn = true;
 let objPalavra;
 let plvSecreta = '';
 let letraTeste = '';
@@ -27,20 +41,46 @@ let palavra = [];
 let erradas = [];
 let certas = [];
 let pontos = 0;
-const tempoIni = 200;
+let tempoIni = 200;
 let tempo = tempoIni;
 let timer;
+
 const pontosStorage = localStorage.getItem('pontos');
+const tempoIniStorage = localStorage.getItem('tempoIni');
+const qntErrosStorage = localStorage.getItem('qntErros');
+const temaStorage = localStorage.getItem('tema');
+const piscaStorage = localStorage.getItem('pisca');
+
 if (pontosStorage !== null) pontos = Number(pontosStorage);
 lblPontos.innerHTML = pontos;
 
+if (tempoIniStorage !== null) tempoIni = Number(tempoIniStorage);
+inputTmpJogo.value = tempoIni;
+
+if (qntErrosStorage !== null) qntErros = Number(qntErrosStorage);
+inputQntErros.value = qntErros;
+
+if (temaStorage !== null) tema = Number(temaStorage);
+slctTema.selectedIndex = tema;
+seletorTema();
+
+if (piscaStorage !== null) {
+    if (piscaStorage === 'false') {
+        piscarOn = false;
+    } else {
+        piscarOn = true;
+    }
+}   
+chkPiscaFundo.checked = piscarOn;
+
 /* 
     Para arrumar:
+    - Piscada quando recarrega a página (transition) (ativar após carregar a pag)
+    - Pisca fundo
+    - tirar a palavra do plvSecretaBase por segurança
     - Página de configurações
-        - Adicionar Modo Escuro
-        - Mudar Tempo até perder
-        - Quantidade de erros para dica
-        - 
+        
+    - Ao sair no meio do jogo, mostrar a palavra
     - Otimizar os bonecos
     - Adicionar botão de 'jogar novamente' (mudar o q acontece ao perder/morrer)
     - Deixar a página mais estilizada
@@ -49,10 +89,12 @@ lblPontos.innerHTML = pontos;
 
 /* 
     Feitos (para facilitar versionamento):
-    - Ao perder a caixa da letra de teste é bloqueada para evitar spamming de letras
-    - Não é permitido somente caracteres como palavra
-    - Frases muito grandes quebravam as palavras ao meio
-    - Mudei os botões e funções de lugar para melhor visualização
+    - Página de configurações
+            - Adicionar Modo Escuro
+            - Mudar Tempo até perder
+            - Quantidade de erros para dica
+            - Pisca cor do fundo
+    - Salvando as config no browser
 */
 
 divPrincipal.addEventListener("keypress", function (event) {
@@ -69,6 +111,12 @@ divJogo.addEventListener("keypress", function (event) {
     }
 });
 
+btnConfig.addEventListener('click', function () {
+    divPontos.style.display = 'none';
+    divPrincipal.style.display = 'none';
+    divConfig.style.display = 'block';
+})
+
 btnPlvAleat.addEventListener('click', function palavraAleatoria() {
     objPalavra = dicionario.getPalavra();
     jogar(objPalavra.nome);
@@ -78,9 +126,33 @@ chkDica.addEventListener('click', function () {
     mostraDica();
 });
 
+slctTema.addEventListener('change', function () {
+    seletorTema();
+});
+
+inputTmpJogo.addEventListener('change', function () {
+    tempoIni = inputTmpJogo.value;
+    localStorage.setItem('tempoIni', tempoIni);
+});
+
+inputQntErros.addEventListener('change', function () {
+    qntErros = inputQntErros.value;
+    localStorage.setItem('qntErros', qntErros);
+});
+
+chkPiscaFundo.addEventListener('change', function () {
+    piscarOn = chkPiscaFundo.checked;
+    localStorage.setItem('pisca', piscarOn);
+});
+
 /* Configura o jogo para começar */
 btnJogar.addEventListener('click', function () {
     jogar();
+});
+
+/* Botão para voltar ao menu */
+btnVoltar.addEventListener('click', function () {
+    reset();
 });
 
 /* Botão para sair da partida */
@@ -91,6 +163,33 @@ btnSair.addEventListener('click', function () {
 
 
 
+
+function seletorTema() {
+    tema = slctTema.selectedIndex;
+    localStorage.setItem('tema', tema);
+
+    switch (slctTema.selectedIndex) {
+        case 0:
+            corFundo = '#a1b2c3';
+            document.body.style.backgroundColor = '';
+            document.body.style.color = '';
+            for (let i = 0; i < allInputs.length; i++) {
+                allInputs[i].style.backgroundColor = null;
+                allInputs[i].style.color = null;
+            }
+            break;
+
+        case 1:
+            corFundo = '#313233';
+            document.body.style.backgroundColor = '#313233';
+            document.body.style.color = '#eee';
+            for (let i = 0; i < allInputs.length; i++) {
+                allInputs[i].style.backgroundColor = '#515253';
+                allInputs[i].style.color = '#eee';
+            }
+            break;
+    }
+}
 
 function jogar(palavra) {
     /* Se receber uma palavra, troca o texto do input 'plvSecretaBase' */
@@ -116,7 +215,9 @@ function jogar(palavra) {
 function reset() {
     tentativas = 6;
     divPrincipal.style.display = 'block';
+    divPontos.style.display = 'block';
     divJogo.style.display = null;
+    divConfig.style.display = null;
     plvSecretaBase.value = '';
     lblTentativas.innerHTML = tentativas;
     letra.disabled = false;
@@ -261,29 +362,32 @@ function desenharBoneco() {
 
 /* Recebe uma letra/frase e remove o acento (funciona separando o Unicode do acento do da letra) */
 /* Ex: O caractere 'à' ('\u00e0') é a combinação do 'a' ('\u0061') com o acento '`' ('\u0300') */
-/* A função abaixo retira as marcas do \u0300 (`) até o \u036f (' ͯ ')*/
+/* A função abaixo retira as marcas do \u0300 (`) até o \u036f ( ͯ ) */
 function removeAcento(letra) {
     return letra.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
 function mudaCorFundo(cor, vezes, obj) {
-    let contaVezes = 0;
-    let corOriginal = '';
-    piscar();
-    function piscar() {
-        if (contaVezes === vezes) { return; }
-        if (corOriginal === obj.style.backgroundColor) {
-            obj.style.backgroundColor = cor;
-        } else {
-            contaVezes++;
-            obj.style.backgroundColor = corOriginal;
+    if (chkPiscaFundo.checked) {
+        let contaVezes = 0;
+        let corOriginal = corFundo;
+        piscar();
+        function piscar() {
+            console.log('pisca');
+            if (contaVezes === vezes) { return; }
+            if (corOriginal === document.body.style.backgroundColor) {
+                document.body.style.backgroundColor = cor;
+            } else {
+                contaVezes++;
+                document.body.style.backgroundColor = corOriginal;
+            }
+            setTimeout(piscar, 500);
         }
-        setTimeout(piscar, 500);
     }
 };
 
 function mostraDica() {
-    if (tentativas < 2 && typeof (objPalavra) !== 'undefined') {
+    if (tentativas <= qntErros && typeof (objPalavra) !== 'undefined') {
         if (objPalavra.dica !== undefined) {
             divDica.style.display = 'block';
             if (chkDica.checked) {
