@@ -25,8 +25,9 @@ const lblTentativas = document.querySelector('#tentativas');
 const lblLetrasErradas = document.querySelector('#lblLetrasErradas');
 const lblTempo = document.querySelector('#tempo');
 const lblPontos = document.querySelector('#pontos');
-const body = document.querySelector('#body');
 const dica = document.querySelector('#dica');
+const body = document.querySelector('#body');
+const footer = document.querySelector('#footer');
 
 let corFundo = '';
 let tema = 0;
@@ -75,18 +76,20 @@ chkPiscaFundo.checked = piscarOn;
 
 /* 
     Para arrumar:         
-    - Ao sair no meio do jogo, mostrar a palavra
     - Otimizar os bonecos
     - Adicionar botão de 'jogar novamente' (mudar o q acontece ao perder/morrer)
     - Deixar a página mais estilizada
     - Otimizar o código
-    - tirar a palavra do plvSecretaBase por segurança
+    
 */
 
 /* 
     Feitos (para facilitar versionamento):
-    - Adicionado ícone
-    - Pisca fundo consertado
+    - Footer e botões aparecerão no fim da página com telas menores ou frases gigantes na tela
+    - Ao sair no meio do jogo, mostrar a palavra
+    - tirar a palavra do plvSecretaBase por segurança
+    - Botão Testar desativado ao perder o jogo
+    - Botão Sair desativado ao perder o jogo
 */
 
 divPrincipal.addEventListener("keypress", function (event) {
@@ -149,51 +152,28 @@ btnVoltar.addEventListener('click', function () {
 
 /* Botão para sair da partida */
 btnSair.addEventListener('click', function () {
-    reset();
+    perdeu();
 });
 
 
 
 
 
-function seletorTema() {
-    tema = slctTema.selectedIndex;
-    localStorage.setItem('tema', tema);
-
-    switch (slctTema.selectedIndex) {
-        case 0:
-            corFundo = 'rgb(161, 178, 195)';
-            body.style.backgroundColor = 'rgb(190, 195, 205)';
-            body.style.color = '#000';
-            for (let i = 0; i < allInputs.length; i++) {
-                allInputs[i].style.backgroundColor = null;
-                allInputs[i].style.color = null;
-            }
-            break;
-
-        case 1:
-            corFundo = 'rgb(49, 50, 51)';
-            document.body.style.backgroundColor = 'rgb(49, 50, 51)';
-            document.body.style.color = '#eee';
-            for (let i = 0; i < allInputs.length; i++) {
-                allInputs[i].style.backgroundColor = '#515253';
-                allInputs[i].style.color = '#eee';
-            }
-            break;
-    }
-}
 
 function jogar(palavra) {
     /* Se receber uma palavra, troca o texto do input 'plvSecretaBase' */
-    if (typeof (palavra) === 'string' && palavra !== '') {
-        plvSecretaBase.value = palavra;
+    if (typeof (palavra) === 'undefined') {
+        palavra = plvSecretaBase.value;
+        plvSecretaBase.value = '';
     }
     let caracPermitidos = /[\u0030-\u0039\u0041-\u005a\u0061-\u007a]/g
     /* Testa se tem alguma coisa escrita */
-    if (plvSecretaBase.value !== '' && removeAcento(plvSecretaBase.value).match(caracPermitidos)) {
+    if (palavra !== '' && removeAcento(palavra).match(caracPermitidos)) {
         divPrincipal.style.display = 'none';
         divJogo.style.display = 'block';
-        plvSecreta = plvSecretaBase.value.toUpperCase();
+        footer.style.position = 'relative';
+        btnSair.style.position = 'relative';
+        plvSecreta = palavra.toUpperCase();
         separarLetras();
         contarEspacos();
         temporizador();
@@ -208,11 +188,15 @@ function reset() {
     tentativas = 6;
     divPrincipal.style.display = 'block';
     divPontos.style.display = 'block';
+    btnSair.style.position = null;
+    footer.style.position = null;
     divJogo.style.display = null;
     divConfig.style.display = null;
     plvSecretaBase.value = '';
     lblTentativas.innerHTML = tentativas;
     letra.disabled = false;
+    btnTestar.disabled = false;
+    btnSair.disabled = false;
     plvSecretaBase.focus();
     erradas = [];
     certas = [];
@@ -336,6 +320,9 @@ function testeGanhou() {
 
 function perdeu() {
     letra.disabled = true;
+    btnTestar.disabled = true;
+    btnSair.disabled = true;
+    lblForca.innerHTML = plvSecreta;
     mudaCorFundo('#ff000099', 3, body)
     setTimeout(msg, 3000);
     function msg() { alert('Você perdeu. A palavra secreta era: ' + plvSecreta) };
@@ -397,3 +384,30 @@ function atualizaPontos(pontos) {
     localStorage.setItem('pontos', pontos);
     lblPontos.innerHTML = pontos;
 };
+
+function seletorTema() {
+    tema = slctTema.selectedIndex;
+    localStorage.setItem('tema', tema);
+
+    switch (slctTema.selectedIndex) {
+        case 0:
+            corFundo = 'rgb(161, 178, 195)';
+            body.style.backgroundColor = 'rgb(190, 195, 205)';
+            body.style.color = '#000';
+            for (let i = 0; i < allInputs.length; i++) {
+                allInputs[i].style.backgroundColor = null;
+                allInputs[i].style.color = null;
+            }
+            break;
+
+        case 1:
+            corFundo = 'rgb(49, 50, 51)';
+            document.body.style.backgroundColor = 'rgb(49, 50, 51)';
+            document.body.style.color = '#fff';
+            for (let i = 0; i < allInputs.length; i++) {
+                allInputs[i].style.backgroundColor = '#515253';
+                allInputs[i].style.color = '#fff';
+            }
+            break;
+    }
+}
