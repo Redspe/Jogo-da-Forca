@@ -75,7 +75,7 @@ if (piscaStorage !== null) {
 chkPiscaFundo.checked = piscarOn;
 
 /* 
-    Para arrumar:         
+    Para arrumar:
     - Otimizar os bonecos
     - Adicionar botão de 'jogar novamente' (mudar o q acontece ao perder/morrer)
     - Deixar a página mais estilizada
@@ -85,11 +85,7 @@ chkPiscaFundo.checked = piscarOn;
 
 /* 
     Feitos (para facilitar versionamento):
-    - Footer e botões aparecerão no fim da página com telas menores ou frases gigantes na tela
-    - Ao sair no meio do jogo, mostrar a palavra
-    - tirar a palavra do plvSecretaBase por segurança
-    - Botão Testar desativado ao perder o jogo
-    - Botão Sair desativado ao perder o jogo
+    - Bug ao perder ganha ponto
 */
 
 divPrincipal.addEventListener("keypress", function (event) {
@@ -308,7 +304,7 @@ function testeGanhou() {
     let teste = plvSecreta;
     teste = teste.replaceAll(' ', '')
 
-    if (forca === teste && teste !== '') {
+    if (forca === teste && teste !== '' && letra.disabled === false) {
         mudaCorFundo('#00ff0077', 2, body)
         setTimeout(ganhou, 3000);
         function ganhou() { alert('Você Ganhou!!!') };
