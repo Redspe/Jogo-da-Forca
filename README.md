@@ -21,6 +21,9 @@ Não é necessário baixar nada! Ele roda no seu navegador.
 ### Muito além de só palavras!
 - Aqui não jogamos somente com palavras, mas com frases também! Quer usar uma fala de um filme? Sem problemas! É possível jogar com quantas palavras quiser.
 
+### Um unicórnio?! Não, são os Temas Customizáveis!
+- Escolha o esquema de cores que mais se encaixa com você e seu Setup! É possível mudar a cor do fundo, a cor dos textos e dos botões!
+
 ### Quer irritar seu amigo com _pneumoultramicroscopicossilicovulcanoconiótico_ ? 
 - Aqui você pode! Escreva o que quiser na caixa de texto que o jogo preparará para você jogar.
 
