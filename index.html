@@ -11,6 +11,7 @@
 </head>
 
 <body id="body">
+  <main>
   <h1 class="titulo">Jogo da Forca</h1>
   <div id="divPontos"><label>Pontos em sequência: </label><label id="pontos">0</label></div>
   <div id="divPrincipal">
@@ -37,7 +38,6 @@
     <br>
     <button type="button" id="btnPlvAleat" class="inputs">Palavra aleatória</button>
     <br>
-    <button type="button" id="btnConfig" class="inputs">Configurações</button>
   </div>
 
   <div id="divJogo">
@@ -143,43 +143,124 @@
     <br>
     <input type="text" id="letra" maxlength="1" placeholder="Letra" class="inputs">
     <button id="btnTestar" class="inputs">Testar</button>
+  </div>
+
+  <div id="divPerdeu">
+    <h1 id="tituloPosJogo"></h1>
+    <h2>O correto era: </h2>
+    <h2 id="lblPerdeu"></h2>
+    <button id="btnJogarDnv" class="inputs">Jogar novamente</button>
     <br>
     <br>
-    <button id="btnSair" class="inputs">Sair do jogo</button>
   </div>
 
   <div id="divConfig">
     <h2>Configurações</h2>
-    <table>
 
+    <table>
+      <th colspan="2">Jogabilidade</th>
+      <tr id="trTempo">
+        <td><label title="Tempo disponível para resolver a palavra/frase">Tempo de jogo em seg. <wbr>(15-600):</label>
+        </td>
+        <td><input id="inputTmpJogo" class="inputs" type="number" value="200" step="15" min="15" max="600"
+            title="Tempo disponível para resolver a palavra/frase"></td>
+      </tr>
+
+      <tr id="trDica">
+        <td><label title="Quantidade de tentativas restantes até que mostre a dica">Tentativas restantes até a dica
+            (0-5):</label></td>
+        <td><input id="inputQntErros" class="inputs" type="number" value="1" min="0" max="5"
+            title="Quantidade de tentativas restantes até que mostre a dica"></td>
+      </tr>
+    </table>
+
+    <table>
+      <th colspan="3">Aparência</th>
       <tr>
         <td><label title="Deixa a tela com cores escuras, claras, etc.">Tema:</label></td>
         <td>
           <select id="slctTema" class="inputs" title="Deixa a tela com cores escuras, claras, etc.">
-            <option value="claro">Claro</option>
-            <option value="Escuro">Escuro</option>
+            <option>Escuro</option>
+            <option>Noite</option>
+            <option>Nuvens</option>
+            <option>Claro</option>
+            <option>Outro (Customizado)</option>
           </select>
+        </td>
+      </tr>
+    </table>
+
+    <table id="divTemaCustom">
+      <tr>
+        <td>
+          <button id="btnCorFundo" class="inputs">Cor do fundo ▼</button>
+        </td>
+      </tr>
+      <tr>
+        <td id="tdCorFundo" style="display: none;">
+          <input id="corFundoVerm" placeholder="Verm." class="inputs" type="number" title="Vermelho (0-255)" step="15"
+            min="0" max="255">
+          <input id="corFundoVerde" placeholder="Verde" class="inputs" type="number" title="Verde (0-255)" step="15"
+            min="0" max="255">
+          <input id="corFundoAzul" placeholder="Azul" class="inputs" type="number" title="Azul (0-255)" step="15"
+            min="0" max="255">
         </td>
       </tr>
 
       <tr>
-        <td><label title="Tempo disponível para resolver a palavra/frase">Tempo de jogo (seg):</label></td>
-        <td><input id="inputTmpJogo" class="inputs" type="number" value="200" step="10" title="Tempo disponível para resolver a palavra/frase"></td>
+        <td>
+          <button id="btnCorTexto" class="inputs">Cor do texto ▼</button>
+        </td>
+      </tr>
+      <tr>
+        <td id="tdCorTexto" style="display: none;">
+          <input id="corTextoVerm" placeholder="Verm." class="inputs" type="number" title="Vermelho (0-255)" step="15"
+            min="0" max="255">
+          <input id="corTextoVerde" placeholder="Verde" class="inputs" type="number" title="Verde (0-255)" step="15"
+            min="0" max="255">
+          <input id="corTextoAzul" placeholder="Azul" class="inputs" type="number" title="Azul (0-255)" step="15"
+            min="0" max="255">
+        </td>
       </tr>
 
       <tr>
-        <td><label title="Quantidade de tentativas restantes até que mostre a dica">Erros até a dica:</label></td>
-        <td><input id="inputQntErros" class="inputs" type="number" value="1" title="Quantidade de tentativas restantes até que mostre a dica"></td>
+        <td>
+          <button id="btnCorBotao" class="inputs">Cor dos botões ▼</button>
+        </td>
+      </tr>
+      <tr>
+        <td id="tdCorBotao" style="display: none;">
+          <input id="corBotaoVerm" placeholder="Verm." class="inputs" type="number" title="Vermelho (0-255)" step="15"
+            min="0" max="255">
+          <input id="corBotaoVerde" placeholder="Verde" class="inputs" type="number" title="Verde (0-255)" step="15"
+            min="0" max="255">
+          <input id="corBotaoAzul" placeholder="Azul" class="inputs" type="number" title="Azul (0-255)" step="15"
+            min="0" max="255">
+        </td>
       </tr>
 
       <tr>
-        <td><label title="Liga/desliga a função que pisca o fundo para indicar se o jogador acertou ou errou a letra">Pisca cor do fundo:</label></td>
-        <td><input id="chkPiscaFundo" class="inputs" type="checkbox" checked title="Liga/desliga a função que pisca o fundo para indicar se o jogador acertou ou errou a letra"></td>
+        <td><button id="btnAplicar" class="inputs">Aplicar</button></td>
       </tr>
-
+      </t>
     </table>
-    <button id="btnVoltar" class="inputs">Voltar ao Menu</button>
+
+    <table>
+      <th colspan="2">Acessibilidade</th>
+      <tr>
+        <td><label
+            title="Liga/desliga a função que pisca o fundo para indicar se o jogador acertou ou errou a letra">Pisca cor
+            do fundo:</label></td>
+        <td><input id="chkPiscaFundo" class="inputs" type="checkbox" checked
+            title="Liga/desliga a função que pisca o fundo para indicar se o jogador acertou ou errou a letra"></td>
+      </tr>
+    </table>
   </div>
+  </main>
+
+  <button id="btnConfig" class="inputs">Configurações</button>
+  <button id="btnSair" class="inputs" style="display: none;">Sair do jogo</button>
+  <button id="btnVoltar" class="inputs"  style="display: none;">Voltar ao Menu</button>
 
   <footer id="footer">
     Feito por Rafael Herrera 2023© <br>
@@ -187,6 +268,7 @@
       <a href="https://github.com/Redspe/Jogo-da-Forca">https://github.com/Redspe/Jogo-da-Forca</a>
     </address>
   </footer>
+
 </body>
 
 </html>
