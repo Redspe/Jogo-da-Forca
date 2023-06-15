@@ -121,7 +121,7 @@ const db = [
     { nome: 'Computador'}, 
     { nome: 'Endereço IP', dica: 'Redes de Computadores' }, 
     { nome: 'VPN', dica: 'Conexão Privada' }, 
-    { nome: 'Wi-Fi', dica: 'Conexão sem Fio' }, 
+    { nome: 'Wi-Fi', dica: 'Conexão sem Fio' }
 ];
 
 /* Template do Dicionário

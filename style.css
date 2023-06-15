@@ -136,15 +136,18 @@ th {
 
 #divDica {
     display: none;
-    height: 19px;
 }
 
-#divTemaCustom {
-    text-align: center!important;
+#divTemaCustom label{
+    position: relative;
+    bottom: 6px;
 }
 
 #divTemaCustom input {
-    width: 50px;
+    margin: 0;
+    padding: 0 5px;
+    width:60px;
+    height: 30px;
 }
 
 #divTemaCustom #btnAplicar {
@@ -154,7 +157,7 @@ th {
 #chkDica {
     width: 13px;
     position: relative;
-    top: 5px;
+    height: auto;
 }
 
 #letra {
@@ -166,13 +169,7 @@ th {
     font-size: 50px;
     padding: 0 50px;
 } 
-/* 
-#btnConfig, #btnVoltar {
-    position: absolute;
-    bottom: 65px;
-    left: calc(50vw - 100px);
-}
- */
+
 #btnSair {
     position: relative;
     bottom: 0;

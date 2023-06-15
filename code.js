@@ -28,7 +28,7 @@ const footer = document.querySelector('#footer');
 
 let corFundo = '';
 let tema = 1;
-let temaCustom = [];
+let temaCustom;
 let qntErros = 1;
 let piscarOn = true;
 let objPalavra;
@@ -62,13 +62,16 @@ inputQntErros.value = qntErros;
 
 if (temaStorage !== null) tema = Number(temaStorage);
 slctTema.selectedIndex = tema;
+
+/* Um JSON.stringify com as configurações do tema customizado */
+if (temaCustomStorage !== null) {
+    temaCustom = JSON.parse(temaCustomStorage);
+    inputCorFundo.value = temaCustom['fundo'];
+    inputCorTexto.value = temaCustom['texto'];
+    inputCorBotao.value = temaCustom['botao'];
+}
 seletorTema();
 
-/* Um array com as configurações do tema customizado */
-/* if (temaCustomStorage !== null) temaCustom = temaCustomStorage;
-console.log(typeof(temaCustom));
-seletorTema();
- */
 if (piscaStorage !== null) {
     if (piscaStorage === 'false') {
         piscarOn = false;
@@ -80,27 +83,24 @@ chkPiscaFundo.checked = piscarOn;
 
 /* 
     Para arrumar:
-    - Consertar o padding do dica (o q deixa ele p baixo)
-    - Ao ganhar aparecer tela tbm
-    - Otimizar o código
+    - Ao perder/ganhar e a tela estiver piscando amarelo, a tela pisca amarelo mais rápido ao invés do vermelho
+    - Adicionar títulos pós jogo variados (Ganhou: Ex:'Uau, você é bom!', 'Perfeito!')
+    - Otimizar o código (dar uma geral)
         - Criar 'trocaExibicao' para trocar as páginas
-    - Otimizar os bonecos
-    - Otimizar os bonecos
-    - Adicionar botão de 'jogar novamente' (mudar o q acontece ao perder/morrer)
         - Otimizar os bonecos
-    - Adicionar botão de 'jogar novamente' (mudar o q acontece ao perder/morrer)
     - Deixar a página mais estilizada
     - Comentar o código
 */
 
 /* 
-    Feitos (para facilitar versionamento):
-    - Adicionado Temas customizáveis
-    - Bug pontos em sequencia voltavam ao ganhar novamente após perder
-    - Página após perder/ganhar o jogo
-        - Adicionar botão de 'jogar novamente'
-    - Limitar quantidade de tentativas até dica
-    - Definir modo Escuro como padrão
+Feitos (para facilitar versionamento):
+- Consertar a tela pós jogo ao ganhar que estava sumindo
+- Consertar o padding do dica (o q deixa ele p baixo)
+- Trocar as inputs separadas para uma de cor
+- Salvar os temas customizados
+- Compatibilidade da mudança de cor (adicionar atributo de cor)
+- Timer continua contando após ganhar
+- A dica não aparecerá mais após ganhar/perder se configurada para 0
 */
 
 divPrincipal.addEventListener("keypress", function (event) {
@@ -125,24 +125,6 @@ btnConfig.addEventListener('click', function () {
     divConfig.style.display = 'block';
 });
 
-btnCorFundo.addEventListener('click',
-    function () {
-        dropdown(tdCorFundo);
-    }
-);
-
-btnCorTexto.addEventListener('click',
-    function () {
-        dropdown(tdCorTexto);
-    }
-);
-
-btnCorBotao.addEventListener('click',
-    function () {
-        dropdown(tdCorBotao);
-    }
-);
-
 btnAplicar.addEventListener('click', function () {
     seletorTema();
 });
@@ -160,11 +142,25 @@ slctTema.addEventListener('change', function () {
 });
 
 inputTmpJogo.addEventListener('change', function () {
+    if (inputTmpJogo.value < 15) {
+        inputTmpJogo.value = 15;
+    } else {
+        if (inputTmpJogo.value > 600) {
+            inputTmpJogo.value = 600;
+        }
+    }
     tempoIni = inputTmpJogo.value;
     localStorage.setItem('tempoIni', tempoIni);
 });
 
 inputQntErros.addEventListener('change', function () {
+    if (inputQntErros.value < 0) {
+        inputQntErros.value = 0;
+    } else {
+        if (inputQntErros.value > 5) {
+            inputQntErros.value = 5;
+        }
+    }
     qntErros = inputQntErros.value;
     localStorage.setItem('qntErros', qntErros);
 });
@@ -186,22 +182,7 @@ btnJogarDnv.addEventListener('click', function () {
 
 /* Botão para voltar ao menu */
 btnVoltar.addEventListener('click', function () {
-    if (inputQntErros.value >= 0 && inputQntErros.value <= 5) {
-        trDica.style.backgroundColor = null;
-    } else {
-        trDica.style.backgroundColor = 'red';
-    }
-
-    if (inputTmpJogo.value >= 15 && inputTmpJogo.value <= 600) {
-        trTempo.style.backgroundColor = null;
-    } else {
-        trTempo.style.backgroundColor = 'red';
-    }
-
-    if (inputQntErros.value >= 0 && inputQntErros.value <= 5 &&
-        inputTmpJogo.value >= 15 && inputTmpJogo.value <= 600) {
-        reset();
-    }
+    reset();
 });
 
 /* Botão para sair da partida */
@@ -367,13 +348,13 @@ function testeGanhou() {
     forca = forca.replaceAll(/['&nbsp;' '<wbr>']/g, '');
 
     let teste = plvSecreta;
-    teste = teste.replaceAll(' ', '')
+    teste = teste.replaceAll(' ', '');
 
     if (forca === teste && teste !== '' && letra.disabled === false) {
-        mudaCorFundo('#00ff0077', 2, body)
+        clearInterval(timer);
+        mudaCorFundo('#00ff00', 2, body);
         setTimeout(msg, 3000);
-    function msg() { telaPosJogo(0); }
-        setTimeout(reset, 3100);
+        function msg() { telaPosJogo(1); }
         atualizaPontos(++pontos);
     }
     letra.focus();
@@ -384,7 +365,7 @@ function perdeu() {
     btnTestar.disabled = true;
     btnSair.disabled = true;
     lblForca.innerHTML = plvSecreta;
-    mudaCorFundo('#ff000099', 3, body)
+    mudaCorFundo('#ff0000', 3, body);
     clearInterval(timer);
     atualizaPontos(0);
     setTimeout(msg, 3000);
@@ -402,7 +383,7 @@ function telaPosJogo(status) {
     if (status === 0) {
         tituloPosJogo.innerHTML = 'Você não acertou!'
     } else {
-        tituloPosJogo.innerHTML = 'Você acertou!'
+        tituloPosJogo.innerHTML = 'VOCÊ ACERTOU!'
     }
 }
 
@@ -427,12 +408,14 @@ function mudaCorFundo(cor, vezes, obj) {
         let corOriginal = corFundo;
         piscar();
         function piscar() {
-            if (contaVezes === vezes) { return; }
-            if (corOriginal === obj.style.backgroundColor) {
+            if (contaVezes === vezes) return;
+            if (corOriginal === obj.attributes['data-fundo'].value) {
                 obj.style.backgroundColor = cor;
+                obj.attributes['data-fundo'].value = cor;
             } else {
                 contaVezes++;
                 obj.style.backgroundColor = corOriginal;
+                obj.attributes['data-fundo'].value = corOriginal;
             }
             setTimeout(piscar, 500);
         }
@@ -441,7 +424,7 @@ function mudaCorFundo(cor, vezes, obj) {
 
 function mostraDica() {
     if (tentativas <= qntErros && typeof (objPalavra) !== 'undefined') {
-        if (objPalavra.dica !== undefined) {
+        if (objPalavra.dica !== undefined && tentativas !== 0) {
             divDica.style.display = 'block';
             if (chkDica.checked) {
                 dica.innerHTML = objPalavra.dica;
@@ -462,6 +445,8 @@ function atualizaPontos(Pontos) {
 };
 
 function seletorTema() {
+    let corTexto;
+    let corBotao;
     tema = slctTema.selectedIndex;
     localStorage.setItem('tema', tema);
     divTemaCustom.style.display = 'none';
@@ -471,92 +456,58 @@ function seletorTema() {
         /* Tema Preto */
         case 0:
             corFundo = 'rgb(0, 0, 0)';
-            document.body.style.backgroundColor = corFundo;
-            document.body.style.color = '#fff';
-            for (let i = 0; i < allInputs.length; i++) {
-                allInputs[i].style.backgroundColor = '#313233';
-                allInputs[i].style.color = '#fff';
-            }
+            corTexto = 'rgb(255, 255, 255)';
+            corBotao = '#313233';
             break;
 
 
         /* Tema Escuro */
         case 1:
             corFundo = 'rgb(49, 50, 51)';
-            document.body.style.backgroundColor = corFundo;
-            document.body.style.color = '#fff';
-            for (let i = 0; i < allInputs.length; i++) {
-                allInputs[i].style.backgroundColor = '#515253';
-                allInputs[i].style.color = '#fff';
-            }
+            corTexto = 'rgb(255, 255, 255)';
+            corBotao = '#515253';
             break;
 
 
         /* Tema Nuvens */
         case 2:
             corFundo = 'rgb(173, 216, 230)';
-            body.style.backgroundColor = corFundo;
-            body.style.color = '#000';
-            for (let i = 0; i < allInputs.length; i++) {
-                allInputs[i].style.backgroundColor = 'rgb(230, 235, 245)';
-                allInputs[i].style.color = '#000';
-            }
+            corTexto = 'rgb(0, 0, 0)';
+            corBotao = 'rgb(230, 235, 245)';
             break;
 
 
         /* Tema Claro */
         case 3:
             corFundo = 'rgb(240, 240, 240)';
-            document.body.style.backgroundColor = corFundo;
-            document.body.style.color = '#000';
-            for (let i = 0; i < allInputs.length; i++) {
-                allInputs[i].style.backgroundColor = 'rgb(225, 225, 225)';
-                allInputs[i].style.color = '#000';
-            }
+            corTexto = 'rgb(0, 0, 0)';
+            corBotao = 'rgb(225, 225, 225)';
             break;
 
 
         /* Tema Customizado */
         case 4:
             divTemaCustom.style.display = null;
-            corFundo = inputToRGB(corFundoVerm.value, corFundoVerde.value, corFundoAzul.value);
-            let corTexto = inputToRGB(corTextoVerm.value, corTextoVerde.value, corTextoAzul.value);
-            let corFundoInput = inputToRGB(corBotaoVerm.value, corBotaoVerde.value, corBotaoAzul.value);
-            document.body.style.backgroundColor = corFundo;
-            document.body.style.color = corTexto;
-            for (let i = 0; i < allInputs.length; i++) {
-                allInputs[i].style.backgroundColor = corFundoInput;
-                allInputs[i].style.color = corTexto;
-            }
-            /* salvarTemaCustom(corFundo, corTexto, corFundoInput) */
+            corFundo = inputCorFundo.value === '#000000' ? undefined : inputCorFundo.value;
+            corTexto = inputCorTexto.value === '#000000' ? undefined : inputCorTexto.value;
+            corBotao = inputCorBotao.value === '#000000' ? undefined : inputCorBotao.value;
+            salvarTemaCustom(corFundo, corTexto, corBotao);
             break;
     }
-}
-
-function inputToRGB(in1, in2, in3) {
-    if (in1 !== '' || in2 !== '' || in3 !== '') {
-        if (in1 === '') { in1 = 0 }
-        if (in2 === '') { in2 = 0 }
-        if (in3 === '') { in3 = 0 }
+    document.body.style.backgroundColor = corFundo;
+    document.body.style.color = corTexto;
+    for (let i = 0; i < allInputs.length; i++) {
+        allInputs[i].style.backgroundColor = corBotao;
+        allInputs[i].style.color = corTexto;
     }
-
-    let RGB = 'rgb(' + in1 + ', ' + in2 + ', ' + in3 + ')'
-    return (RGB);
+    document.body.setAttribute('data-fundo', corFundo);
 }
 
-
-function dropdown(id) {
-    if (id.style.display === 'none') {
-        id.style.display = 'block';
-    } else {
-        id.style.display = 'none';
-    };
-}
-
-function salvarTemaCustom (a, b, c) {
-    let abc = [];
-    abc.push(a);
-    abc.push(b);
-    abc.push(c);
-    localStorage.setItem('temaCustom', abc);
+function salvarTemaCustom(a, b, c) {
+    const obj = {
+        fundo: a,
+        texto: b,
+        botao: c
+    }
+    localStorage.setItem('temaCustom', JSON.stringify(obj));
 }

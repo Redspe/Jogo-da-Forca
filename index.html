@@ -12,10 +12,10 @@
 
 <body id="body">
   <main>
-  <h1 class="titulo">Jogo da Forca</h1>
-  <div id="divPontos"><label>Pontos em sequência: </label><label id="pontos">0</label></div>
-  <div id="divPrincipal">
-    <pre id="bonecoPrincipal">
+    <h1 class="titulo">Jogo da Forca</h1>
+    <div id="divPontos"><label>Pontos em sequência: </label><label id="pontos">0</label></div>
+    <div id="divPrincipal">
+      <pre id="bonecoPrincipal">
  ________
 //-------|
 ||       |      
@@ -26,30 +26,30 @@
 ||
 ||
     </pre>
-    <label for="plvSecretaBase">Digite a palavra secreta:</label>
-    <br>
-    <input type="text" id="plvSecretaBase" class="inputs">
-    <br>
-    <button type="button" id="btnJogar" class="inputs">Jogar</button>
-    <br>
-    <br>
-    <br>
-    <label>Não quer escolher uma palavra? Te damos uma aleatória!</label>
-    <br>
-    <button type="button" id="btnPlvAleat" class="inputs">Palavra aleatória</button>
-    <br>
-  </div>
+      <label for="plvSecretaBase">Digite a palavra secreta:</label>
+      <br>
+      <input type="text" id="plvSecretaBase" class="inputs">
+      <br>
+      <button type="button" id="btnJogar" class="inputs">Jogar</button>
+      <br>
+      <br>
+      <br>
+      <label>Não quer escolher uma palavra? Te damos uma aleatória!</label>
+      <br>
+      <button type="button" id="btnPlvAleat" class="inputs">Palavra aleatória</button>
+      <br>
+    </div>
 
-  <div id="divJogo">
-    <br>
-    <label>Tempo restante: </label><label id="tempo">120</label><label>s.</label>
-    <br>
-    <label>Tentativas restantes:</label>
-    <label id="tentativas">6</label>
-    <br>
+    <div id="divJogo">
+      <br>
+      <label>Tempo restante: </label><label id="tempo">120</label><label>s.</label>
+      <br>
+      <label>Tentativas restantes:</label>
+      <label id="tentativas">6</label>
+      <br>
 
-    <div id="bonecos">
-      <pre id="boneco0" style="display: block;">
+      <div id="bonecos">
+        <pre id="boneco0" style="display: block;">
  ________
 /        |
 |        |      
@@ -60,7 +60,7 @@
 |
 |
       </pre>
-      <pre id="boneco1" style="display: none;">
+        <pre id="boneco1" style="display: none;">
  ________
 /        |
 |        |      
@@ -71,7 +71,7 @@
 |
 |
   </pre>
-      <pre id="boneco2" style="display: none;">
+        <pre id="boneco2" style="display: none;">
  ________
 /        |
 |        |      
@@ -82,7 +82,7 @@
 |
 |
 </pre>
-      <pre id="boneco3" style="display: none;">
+        <pre id="boneco3" style="display: none;">
  ________
 /        |
 |        |      
@@ -93,7 +93,7 @@
 |
 |
 </pre>
-      <pre id="boneco4" style="display: none;">
+        <pre id="boneco4" style="display: none;">
  ________
 /        |
 |        |      
@@ -104,7 +104,7 @@
 |
 |
 </pre>
-      <pre id="boneco5" style="display: none;">
+        <pre id="boneco5" style="display: none;">
  ________
 /        |
 |        |      
@@ -115,7 +115,7 @@
 |
 |
 </pre>
-      <pre id="boneco6" style="display: none;">
+        <pre id="boneco6" style="display: none;">
  ________
 /        |
 |        |      
@@ -126,141 +126,114 @@
 |
 |
 </pre>
+      </div>
+
+      <br>
+      <label id="lblForca"></label>
+      <br>
+      <br>
+      <div id="divDica">
+        <input id="chkDica" type="checkbox">
+        <span>Dica: </span><span id="dica"></span>
+      </div>
+      <label>Letras erradas:</label>
+      <label id="lblLetrasErradas"></label>
+      <br>
+      <br>
+      <input type="text" id="letra" maxlength="1" placeholder="Letra" class="inputs">
+      <button id="btnTestar" class="inputs">Testar</button>
     </div>
 
-    <br>
-    <label id="lblForca"></label>
-    <br>
-    <br>
-    <div id="divDica">
-      <input id="chkDica" type="checkbox">
-      <span>Dica: </span><span id="dica"></span>
+    <div id="divPerdeu">
+      <h1 id="tituloPosJogo"></h1>
+      <h2>A palavra/frase era: </h2>
+      <h2 id="lblPerdeu"></h2>
+      <button id="btnJogarDnv" class="inputs">Jogar novamente</button>
+      <br>
+      <br>
     </div>
-    <br>
-    <label>Letras erradas:</label>
-    <label id="lblLetrasErradas"></label>
-    <br>
-    <br>
-    <input type="text" id="letra" maxlength="1" placeholder="Letra" class="inputs">
-    <button id="btnTestar" class="inputs">Testar</button>
-  </div>
 
-  <div id="divPerdeu">
-    <h1 id="tituloPosJogo"></h1>
-    <h2>O correto era: </h2>
-    <h2 id="lblPerdeu"></h2>
-    <button id="btnJogarDnv" class="inputs">Jogar novamente</button>
-    <br>
-    <br>
-  </div>
+    <div id="divConfig">
+      <h2>Configurações</h2>
 
-  <div id="divConfig">
-    <h2>Configurações</h2>
+      <table>
+        <th colspan="2">Jogabilidade</th>
+        <tr id="trTempo">
+          <td><label title="Tempo disponível para resolver a palavra/frase">Tempo de jogo em seg. <wbr>(15-600):</label>
+          </td>
+          <td><input id="inputTmpJogo" class="inputs" type="number" value="200" step="15" min="15" max="600"
+              title="Tempo disponível para resolver a palavra/frase"></td>
+        </tr>
 
-    <table>
-      <th colspan="2">Jogabilidade</th>
-      <tr id="trTempo">
-        <td><label title="Tempo disponível para resolver a palavra/frase">Tempo de jogo em seg. <wbr>(15-600):</label>
-        </td>
-        <td><input id="inputTmpJogo" class="inputs" type="number" value="200" step="15" min="15" max="600"
-            title="Tempo disponível para resolver a palavra/frase"></td>
-      </tr>
+        <tr id="trDica">
+          <td><label title="Quantidade de tentativas restantes até que mostre a dica">Tentativas restantes até a dica
+              (0-5):</label></td>
+          <td><input id="inputQntErros" class="inputs" type="number" value="1" min="0" max="5"
+              title="Quantidade de tentativas restantes até que mostre a dica"></td>
+        </tr>
+      </table>
 
-      <tr id="trDica">
-        <td><label title="Quantidade de tentativas restantes até que mostre a dica">Tentativas restantes até a dica
-            (0-5):</label></td>
-        <td><input id="inputQntErros" class="inputs" type="number" value="1" min="0" max="5"
-            title="Quantidade de tentativas restantes até que mostre a dica"></td>
-      </tr>
-    </table>
+      <table>
+        <th colspan="3">Aparência</th>
+        <tr>
+          <td><label title="Deixa a tela com cores escuras, claras, etc.">Tema:</label></td>
+          <td>
+            <select id="slctTema" class="inputs" title="Deixa a tela com cores escuras, claras, etc.">
+              <option>Escuro</option>
+              <option>Noite</option>
+              <option>Nuvens</option>
+              <option>Claro</option>
+              <option>Outro (Customizado)</option>
+            </select>
+          </td>
+        </tr>
+      </table>
 
-    <table>
-      <th colspan="3">Aparência</th>
-      <tr>
-        <td><label title="Deixa a tela com cores escuras, claras, etc.">Tema:</label></td>
-        <td>
-          <select id="slctTema" class="inputs" title="Deixa a tela com cores escuras, claras, etc.">
-            <option>Escuro</option>
-            <option>Noite</option>
-            <option>Nuvens</option>
-            <option>Claro</option>
-            <option>Outro (Customizado)</option>
-          </select>
-        </td>
-      </tr>
-    </table>
+      <table id="divTemaCustom">
+        <tr>
+          <td>
+            <label id="btnCorFundo" >Cor do fundo: </label>
+            <input id="inputCorFundo" class="inputs" type="color" title="Define a cor de fundo da página">
+          </td>
+        </tr>
 
-    <table id="divTemaCustom">
-      <tr>
-        <td>
-          <button id="btnCorFundo" class="inputs">Cor do fundo ▼</button>
-        </td>
-      </tr>
-      <tr>
-        <td id="tdCorFundo" style="display: none;">
-          <input id="corFundoVerm" placeholder="Verm." class="inputs" type="number" title="Vermelho (0-255)" step="15"
-            min="0" max="255">
-          <input id="corFundoVerde" placeholder="Verde" class="inputs" type="number" title="Verde (0-255)" step="15"
-            min="0" max="255">
-          <input id="corFundoAzul" placeholder="Azul" class="inputs" type="number" title="Azul (0-255)" step="15"
-            min="0" max="255">
-        </td>
-      </tr>
+        <tr>
+          <td>
+            <label id="btnCorTexto">Cor do texto: </label>
+            <input id="inputCorTexto" class="inputs" type="color" title="Define a cor do texto da página">
+          </td>
+        </tr>
 
-      <tr>
-        <td>
-          <button id="btnCorTexto" class="inputs">Cor do texto ▼</button>
-        </td>
-      </tr>
-      <tr>
-        <td id="tdCorTexto" style="display: none;">
-          <input id="corTextoVerm" placeholder="Verm." class="inputs" type="number" title="Vermelho (0-255)" step="15"
-            min="0" max="255">
-          <input id="corTextoVerde" placeholder="Verde" class="inputs" type="number" title="Verde (0-255)" step="15"
-            min="0" max="255">
-          <input id="corTextoAzul" placeholder="Azul" class="inputs" type="number" title="Azul (0-255)" step="15"
-            min="0" max="255">
-        </td>
-      </tr>
+        <tr>
+          <td>
+            <label id="btnCorBotao">Cor dos botões: </label>
+            <input id="inputCorBotao" class="inputs" type="color" title="Define a cor dos botões da página">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button id="btnAplicar" class="inputs">Aplicar</button>
+          </td>
+        </tr>
+      </table>
 
-      <tr>
-        <td>
-          <button id="btnCorBotao" class="inputs">Cor dos botões ▼</button>
-        </td>
-      </tr>
-      <tr>
-        <td id="tdCorBotao" style="display: none;">
-          <input id="corBotaoVerm" placeholder="Verm." class="inputs" type="number" title="Vermelho (0-255)" step="15"
-            min="0" max="255">
-          <input id="corBotaoVerde" placeholder="Verde" class="inputs" type="number" title="Verde (0-255)" step="15"
-            min="0" max="255">
-          <input id="corBotaoAzul" placeholder="Azul" class="inputs" type="number" title="Azul (0-255)" step="15"
-            min="0" max="255">
-        </td>
-      </tr>
-
-      <tr>
-        <td><button id="btnAplicar" class="inputs">Aplicar</button></td>
-      </tr>
-      </t>
-    </table>
-
-    <table>
-      <th colspan="2">Acessibilidade</th>
-      <tr>
-        <td><label
-            title="Liga/desliga a função que pisca o fundo para indicar se o jogador acertou ou errou a letra">Pisca cor
-            do fundo:</label></td>
-        <td><input id="chkPiscaFundo" class="inputs" type="checkbox" checked
-            title="Liga/desliga a função que pisca o fundo para indicar se o jogador acertou ou errou a letra"></td>
-      </tr>
-    </table>
-  </div>
+      <table>
+        <th colspan="2">Acessibilidade</th>
+        <tr>
+          <td><label
+              title="Liga/desliga a função que pisca o fundo para indicar se o jogador acertou ou errou a letra">Pisca
+              cor
+              do fundo:</label></td>
+          <td><input id="chkPiscaFundo" class="inputs" type="checkbox" checked
+              title="Liga/desliga a função que pisca o fundo para indicar se o jogador acertou ou errou a letra"></td>
+        </tr>
+      </table>
+    </div>
   </main>
 
   <button id="btnConfig" class="inputs">Configurações</button>
-  <button id="btnSair" class="inputs" style="display: none;">Sair do jogo</button>
-  <button id="btnVoltar" class="inputs"  style="display: none;">Voltar ao Menu</button>
+  <button id="btnSair" class="inputs" style="display: none;">Desistir</button>
+  <button id="btnVoltar" class="inputs" style="display: none;">Voltar ao Menu</button>
 
   <footer id="footer">
     Feito por Rafael Herrera 2023© <br>
