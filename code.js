@@ -83,7 +83,6 @@ chkPiscaFundo.checked = piscarOn;
 
 /* 
     Para arrumar:
-    - Ao perder/ganhar e a tela estiver piscando amarelo, a tela pisca amarelo mais rápido ao invés do vermelho
     - Adicionar títulos pós jogo variados (Ganhou: Ex:'Uau, você é bom!', 'Perfeito!')
     - Otimizar o código (dar uma geral)
         - Criar 'trocaExibicao' para trocar as páginas
@@ -94,13 +93,7 @@ chkPiscaFundo.checked = piscarOn;
 
 /* 
 Feitos (para facilitar versionamento):
-- Consertar a tela pós jogo ao ganhar que estava sumindo
-- Consertar o padding do dica (o q deixa ele p baixo)
-- Trocar as inputs separadas para uma de cor
-- Salvar os temas customizados
-- Compatibilidade da mudança de cor (adicionar atributo de cor)
-- Timer continua contando após ganhar
-- A dica não aparecerá mais após ganhar/perder se configurada para 0
+- Ao perder/ganhar e a tela estiver piscando amarelo, a tela pisca amarelo mais rápido ao invés do vermelho
 */
 
 divPrincipal.addEventListener("keypress", function (event) {
@@ -321,7 +314,11 @@ btnTestar.addEventListener('click',
                     acertou = false;
                 } else {
                     tentativas--;
-                    if (tentativas > 0) mudaCorFundo('#cccc15', 1, body);
+                    if (tentativas > 0) {
+                        body.style.setProperty('--cor-fundo', corFundo);
+                        body.className = '';
+                        requestAnimationFrame( () => body.className = 'wrong-letter')
+                    };
                     mostraDica();
                     erradas.push(letraTeste);
                     lblLetrasErradas.innerHTML = erradas;
@@ -352,7 +349,8 @@ function testeGanhou() {
 
     if (forca === teste && teste !== '' && letra.disabled === false) {
         clearInterval(timer);
-        mudaCorFundo('#00ff00', 2, body);
+        body.style.setProperty('--cor-fundo', corFundo);
+        body.className = 'you-win';
         setTimeout(msg, 3000);
         function msg() { telaPosJogo(1); }
         atualizaPontos(++pontos);
@@ -365,7 +363,8 @@ function perdeu() {
     btnTestar.disabled = true;
     btnSair.disabled = true;
     lblForca.innerHTML = plvSecreta;
-    mudaCorFundo('#ff0000', 3, body);
+    body.style.setProperty('--cor-fundo', corFundo);
+    body.className = 'game-over';
     clearInterval(timer);
     atualizaPontos(0);
     setTimeout(msg, 3000);
@@ -401,26 +400,6 @@ function desenharBoneco() {
 function removeAcento(letra) {
     return letra.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
-
-function mudaCorFundo(cor, vezes, obj) {
-    if (chkPiscaFundo.checked) {
-        let contaVezes = 0;
-        let corOriginal = corFundo;
-        piscar();
-        function piscar() {
-            if (contaVezes === vezes) return;
-            if (corOriginal === obj.attributes['data-fundo'].value) {
-                obj.style.backgroundColor = cor;
-                obj.attributes['data-fundo'].value = cor;
-            } else {
-                contaVezes++;
-                obj.style.backgroundColor = corOriginal;
-                obj.attributes['data-fundo'].value = corOriginal;
-            }
-            setTimeout(piscar, 500);
-        }
-    }
-};
 
 function mostraDica() {
     if (tentativas <= qntErros && typeof (objPalavra) !== 'undefined') {

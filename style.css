@@ -1,3 +1,51 @@
+.you-win {
+    animation: you-win 1s 3;
+}
+
+.game-over {
+    animation: game-over 1s 3;
+}
+
+.wrong-letter {
+    animation: wrong-letter 1s 1;
+}
+
+@keyframes wrong-letter{
+    0% {
+        background-color: var(--cor-fundo);
+    }
+    50%{
+        background-color: yellow;
+    }
+    100%{
+        background-color: var(--cor-fundo);
+    }
+}
+
+@keyframes game-over{
+    0% {
+        background-color: var(--cor-fundo);
+    }
+    50%{
+        background-color: red;
+    }
+    100%{
+        background-color: var(--cor-fundo);
+    }
+}
+
+@keyframes you-win{
+    0% {
+        background-color: var(--cor-fundo);
+    }
+    50%{
+        background-color: lime;
+    }
+    100%{
+        background-color: var(--cor-fundo);
+    }
+}
+
 html, body {
     height: 100%;
     margin: 0;
@@ -15,7 +63,8 @@ body {
     height: 100%;
     background-color: rgb(49, 50, 51);
     color: #fff;
-    transition: background-color 500ms, color 500ms, 500ms;
+    /* transition: background-color 500ms, color 500ms, 500ms; */
+    animation-iteration-count: 2;
 }
 
 main {
